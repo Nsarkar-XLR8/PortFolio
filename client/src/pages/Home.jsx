@@ -234,7 +234,7 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 1.5 }}
             className="text-lg md:text-2xl text-gray-800 max-w-lg"
           >
-            **MERN Stack Developer** • Building scalable apps with React, Node, MongoDB, and AI.
+            **Software Engineer - MERN Stack Developer** • Building scalable apps with React, Node, MongoDB, and AI.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}

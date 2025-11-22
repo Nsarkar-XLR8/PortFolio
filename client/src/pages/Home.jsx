@@ -10,8 +10,8 @@ import {
 } from "framer-motion";
 
 const skills = [
-  "React", "Node.js", "Express", "MongoDB", "JavaScript",
-  "Tailwind CSS", "Problem Solving", "MySQL"
+  "React", "Node.js", "Express", "MongoDB", "JavaScript","PHP", 
+  "Tailwind CSS", "Problem Solving", "MySQL", "Docker", "AWS", "CI/CD", "Methodology", "Architectures Pattern"
 ];
 
 // Reusable component for the 3D card effect (Excellent use of Framer Motion)

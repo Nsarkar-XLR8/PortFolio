@@ -10,7 +10,7 @@ import {
 } from "framer-motion";
 
 const skills = [
-  "React", "Node.js", "Express", "MongoDB", "JavaScript","PHP", 
+  "React", "Node.js", "Express", "MongoDB", "TypeScript" , "JavaScript","PHP", Java,
   "Tailwind CSS", "Problem Solving", "MySQL", "Docker", "AWS", "CI/CD", "Methodology", "Architectures Pattern"
 ];
 
@@ -234,7 +234,7 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 1.5 }}
             className="text-lg md:text-2xl text-gray-800 max-w-lg"
           >
-            **Software Engineer - MERN Stack Developer** • Building scalable apps with React, Node, MongoDB, and AI.
+            **Software Engineer -  BackEnd Architect** • Building scalable apps with TS, NestJs, Node, Express,MongoDB.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}

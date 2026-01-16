@@ -10,9 +10,58 @@ import {
 } from "framer-motion";
 
 const skills = [
-  "React", "Node.js", "Express", "MongoDB", "TypeScript" , "JavaScript","PHP", Java,
-  "Tailwind CSS", "Problem Solving", "MySQL", "Docker", "AWS", "CI/CD", "Methodology", "Architectures Pattern"
+  // Languages & Frameworks
+  "TypeScript",
+  "Node.js",
+  "NestJS",
+  "Express.js",
+  "Java",
+  "Python",
+  "C++",
+
+  // Backend Architecture
+  "Modular Architecture",
+  "Dependency Injection (DI)",
+  "Microservices",
+  "Object-Oriented Programming (OOP)",
+  "SOLID Principles",
+  "Domain-Driven Design (DDD)",
+
+  // Data Layer
+  "PostgreSQL",
+  "MySQL",
+  "MongoDB",
+  "Redis",
+  "Prisma",
+  "TypeORM",
+  "Mongoose",
+
+  // API & Integration
+  "RESTful API Design",
+  "Stripe API",
+  "JWT",
+  "Passport.js",
+  "WebSockets",
+  "Postman",
+
+  // Reliability & Testing
+  "Test-Driven Development (TDD)",
+  "Jest",
+  "Unit Testing",
+  "Integration Testing",
+  "ER Diagramming",
+
+  // Cloud & DevOps
+  "Docker",
+  "AWS EC2",
+  "AWS S3",
+  "Cloudinary",
+  "CI/CD Pipelines",
+  "GitHub Actions",
+  "Vercel",
+  "Git"
 ];
+
 
 // Reusable component for the 3D card effect (Excellent use of Framer Motion)
 const ProjectCard = ({ repo, index }) => {

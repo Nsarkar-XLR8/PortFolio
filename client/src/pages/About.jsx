@@ -5,19 +5,68 @@ import { motion } from "framer-motion";
 const generateStableKey = (str, index) => `${str.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${index}`;
 
 const skills = [
-  "React", "Node.js", "Express", "MongoDB", "JavaScript", "CSS",
-  "Tailwind CSS", "Figma", "HTML", "MySQL", "Problem Solving"
+  // Languages & Frameworks
+  "TypeScript",
+  "Node.js",
+  "NestJS",
+  "Express.js",
+  "Java",
+  "Python",
+  "C++",
+
+  // Backend Architecture
+  "Modular Architecture",
+  "Dependency Injection (DI)",
+  "Microservices",
+  "Object-Oriented Programming (OOP)",
+  "SOLID Principles",
+  "Domain-Driven Design (DDD)",
+
+  // Data Layer
+  "PostgreSQL",
+  "MySQL",
+  "MongoDB",
+  "Redis",
+  "Prisma",
+  "TypeORM",
+  "Mongoose",
+
+  // API & Integration
+  "RESTful API Design",
+  "Stripe API",
+  "JWT",
+  "Passport.js",
+  "WebSockets",
+  "Postman",
+
+  // Reliability & Testing
+  "Test-Driven Development (TDD)",
+  "Jest",
+  "Unit Testing",
+  "Integration Testing",
+  "ER Diagramming",
+
+  // Cloud & DevOps
+  "Docker",
+  "AWS EC2",
+  "AWS S3",
+  "Cloudinary",
+  "CI/CD Pipelines",
+  "GitHub Actions",
+  "Vercel",
+  "Git"
 ];
+
 
 // FIX 1: Enhanced experience data for a professional portfolio
 const experience = [
-  { year: "2024 - Present", role: "MERN Stack Developer (Self-Employed)", type: "Professional", description: "Architecting and developing full-stack web applications from concept to deployment using React, Node.js, and MongoDB. Focusing on scalability and modern best practices." },
+  { year: "2024 - Present", role: "Software Engineer & BackEnd Architect", type: "Professional", description: "Architecting and developing backend web applications from concept to deployment. Focusing on scalability and modern best practices." },
   { year: "2020 - 2025", role: "B.Sc. in Computer Science & Engineering", type: "Academic", description: "Graduated with honors, focusing on Data Structures, Algorithms, and Advanced Web Technologies. Developed multiple AI and full-stack projects." },
   { year: "2017 - 2019", role: "Higher Secondary Education (College)", type: "Academic", description: "Strong foundation in Physics and Mathematics." },
 ];
 
 const achievements = [
-  "Built  full-stack web applications with MERN stack. ",
+  "Built web & app with backend stack. ",
   "CSE Project Show Champions in Spring '24 & Spring '25 for innovative solutions.",
   "Completed 100+ coding challenges on **HackerRank** (Problem Solving domain).",
 ];

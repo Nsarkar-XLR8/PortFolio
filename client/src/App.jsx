@@ -1,32 +1,12 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-// Eagerly load the main shell/layout and home page (always needed)
 import Layout from './pages/Layout.jsx';
 import Home from './pages/Home.jsx';
-
-// 1. Create a simple, fast loading fallback component and define it before it is used by 'router'
-const LoadingFallback = () => (
-    <div 
-        style={{ 
-            minHeight: '80vh', 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center',
-            fontSize: '24px',
-            color: '#333',
-        }}
-    >
-        Loading Content... 🚀
-    </div>
-);
-
-
-// 2. Use lazy() for components that are not needed immediately
-const LazyAbout = lazy(() => import('./pages/About.jsx'));
-const LazyService = lazy(() => import('./pages/Service.jsx'));
-const LazyContact = lazy(() => import('./pages/Contact.jsx'));
-const LazyProjects = lazy(() => import('./pages/Projects.jsx'));
+import About from './pages/About.jsx';
+import Service from './pages/Service.jsx';
+import Contact from './pages/Contact.jsx';
+import Projects from './pages/Projects.jsx';
 
 
 const router = createBrowserRouter([
@@ -36,40 +16,26 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> }, 
       
-      // 3. Use the lazy-loaded components in the routes
-      { 
-        path: 'about', 
-        element: (
-          <Suspense fallback={<LoadingFallback />}>
-            <LazyAbout />
-          </Suspense>
-        ) 
-      },
-      { 
-        path: 'contact', 
-        element: (
-          <Suspense fallback={<LoadingFallback />}>
-            <LazyContact />
-          </Suspense>
-        ) 
-      },
-      { 
-        path: 'service', 
-        element: (
-          <Suspense fallback={<LoadingFallback />}>
-            <LazyService />
-          </Suspense>
-        ) 
-      },
+      { path: 'about', element: <About /> },
+      { path: 'contact', element: <Contact /> },
+      { path: 'service', element: <Service /> },
+      { path: 'services', element: <Service /> },
       {
         path: 'projects',
+        element: <Projects />
+      },
+      {
+        path: '*',
         element: (
-          <Suspense fallback={<LoadingFallback />}>
-            <LazyProjects />
-          </Suspense>
+          <div className="page-shell grid min-h-screen place-items-center px-4 text-center">
+            <div className="hero-panel max-w-lg rounded-3xl px-8 py-10">
+              <p className="section-kicker justify-center">404</p>
+              <h1 className="mt-5 text-4xl font-black text-main">Page not found</h1>
+              <p className="mt-4 text-muted">The page you are looking for does not exist.</p>
+            </div>
+          </div>
         )
       },
-      { path: '*', element: <h1>404 Not Found</h1> },
     ]
   }
 ]);

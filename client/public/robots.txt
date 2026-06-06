@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://port-folio-blush-eta.vercel.app/sitemap.xml

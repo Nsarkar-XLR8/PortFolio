@@ -1,201 +1,265 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { updateSeo } from "../utils/seo";
 
-// Helper function to create a stable key from content
-const generateStableKey = (str, index) => `${str.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${index}`;
+const generateStableKey = (str, index) => `${str.toLowerCase().replace(/[^a-z0-9]/g, "-")}-${index}`;
 
 const skills = [
-  // Languages & Frameworks
-  "TypeScript",
-  "Node.js",
-  "NestJS",
-  "Express.js",
   "Java",
-  "Python",
-  "C++",
-
-  // Backend Architecture
-  "Modular Architecture",
-  "Dependency Injection (DI)",
+  "Spring Boot",
+  "NestJS",
   "Microservices",
-  "Object-Oriented Programming (OOP)",
-  "SOLID Principles",
-  "Domain-Driven Design (DDD)",
-
-  // Data Layer
+  "Spring Cloud Gateway",
+  "Eureka",
+  "RabbitMQ",
+  "Redis",
   "PostgreSQL",
   "MySQL",
   "MongoDB",
-  "Redis",
-  "Prisma",
-  "TypeORM",
-  "Mongoose",
-
-  // API & Integration
+  "Hibernate",
+  "Spring Data JPA",
+  "Native SQL CTEs",
   "RESTful API Design",
-  "Stripe API",
+  "Swagger",
+  "Scalar OpenAPI",
+  "OAuth2",
   "JWT",
-  "Passport.js",
   "WebSockets",
-  "Postman",
-
-  // Reliability & Testing
-  "Test-Driven Development (TDD)",
-  "Jest",
-  "Unit Testing",
-  "Integration Testing",
-  "ER Diagramming",
-
-  // Cloud & DevOps
+  "Stripe API",
+  "PayPal API",
   "Docker",
-  "AWS EC2",
-  "AWS S3",
-  "Cloudinary",
-  "CI/CD Pipelines",
-  "GitHub Actions",
-  "Vercel",
-  "Git"
+  "Linux",
+  "VPS",
+  "CI/CD",
+  "JUnit",
+  "Mockito",
 ];
 
-
-// FIX 1: Enhanced experience data for a professional portfolio
 const experience = [
-  { year: "2024 - Present", role: "Software Engineer & BackEnd Architect", type: "Professional", description: "Architecting and developing backend web applications from concept to deployment. Focusing on scalability and modern best practices." },
-  { year: "2020 - 2025", role: "B.Sc. in Computer Science & Engineering", type: "Academic", description: "Graduated with honors, focusing on Data Structures, Algorithms, and Advanced Web Technologies. Developed multiple AI and full-stack projects." },
-  { year: "2017 - 2019", role: "Higher Secondary Education (College)", type: "Academic", description: "Strong foundation in Physics and Mathematics." },
+  {
+    year: "Dec 2025 - Jun 2026",
+    role: "Software Engineer (Backend)",
+    company: "Betopia Group",
+    type: "Professional",
+    description:
+      "Refactored core modules of a legacy monolithic application into type-safe distributed microservices using Java and Spring Boot, with Spring Cloud Gateway and Eureka improving service boundaries and feature delivery.",
+  },
+  {
+    year: "2020 - 2025",
+    role: "B.Sc. in Computer Science & Engineering",
+    company: "Academic",
+    type: "Academic",
+    description:
+      "Built a strong foundation in algorithms, data structures, system modeling, testing, database design, and advanced web technologies.",
+  },
+  {
+    year: "2017 - 2019",
+    role: "Higher Secondary Education",
+    company: "Academic",
+    type: "Academic",
+    description:
+      "Developed the physics and mathematics foundation that still shapes how I reason through engineering problems.",
+  },
+];
+
+const strengths = [
+  {
+    title: "Distributed Systems",
+    text: "I design modular backend services with clear boundaries, reliable communication patterns, and maintainable deployment paths.",
+  },
+  {
+    title: "Data Architecture",
+    text: "I model relational and document data carefully, optimize access paths, and use caching where it improves real system behavior.",
+  },
+  {
+    title: "Reliability",
+    text: "I build secure APIs, idempotent integrations, and tested backend workflows that hold up under production pressure.",
+  },
 ];
 
 const achievements = [
-  "Built web & app with backend stack. ",
-  "CSE Project Show Champions in Spring '24 & Spring '25 for innovative solutions.",
-  "Completed 100+ coding challenges on **HackerRank** (Problem Solving domain).",
+  "Migrated legacy monolithic modules into Java Spring Boot microservices.",
+  "Built recursive hierarchical logic using Native SQL CTEs and Spring Data JPA.",
+  "Improved query response times by 25% through Hibernate optimization and caching.",
+  "Integrated Stripe payment workflows with idempotent webhook processing.",
+  "CSE Project Show Champion in Spring 2024 and Spring 2025.",
 ];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.08 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 const About = () => {
   useEffect(() => {
-    document.title = "About | Nayem Sarkar";
+    updateSeo({
+      title: "About Nayem Sarkar | Backend Architect",
+      description:
+        "Learn about Nayem Sarkar, a Software Engineer and Backend Architect focused on Spring Boot, NestJS, distributed systems, microservices, Hibernate, Redis, and secure API design.",
+      path: "/about",
+    });
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  // Variants for individual item animations
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
   return (
-    // FIX 2: Removed unnecessary surrounding fragment
-    <div className="w-full min-h-screen bg-[#E1D4C1] text-gray-900 px-4 md:px-16 py-24">
-
-      {/* Hero Section */}
-      <section className="text-center md:text-left mb-16">
-        <motion.h1
-          className="text-4xl md:text-6xl font-bold mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          About Me 👨‍💻
-        </motion.h1>
-        <motion.p
-          className="text-lg md:text-2xl max-w-4xl mx-auto md:mx-0 text-gray-800"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          Hi! I'm <span className="text-zinc-700 font-bold">Nayem Sarkar</span>, a **MERN Stack Developer** and **AI enthusiast**. I specialize in building scalable, responsive web applications and exploring AI-driven solutions to real-world problems. My passion lies in clean code, robust architecture, and delivering exceptional user experiences.
-        </motion.p>
-      </section>
-
-      {/* Skills Section */}
+    <div className="page-shell min-h-screen w-full px-4 py-28 md:px-8">
       <motion.section
-        className="mb-20"
+        className="section-wrap grid gap-10 lg:grid-cols-[0.95fr_1.05fr]"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={itemVariants}>
+          <span className="section-kicker">About</span>
+          <h1 className="display-title mt-5 text-5xl md:text-7xl">Backend engineering with intent.</h1>
+        </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          className="hero-panel motion-float-slow rounded-3xl p-6 md:p-8"
+          whileHover={{ y: -8, rotate: -0.25 }}
+          transition={{ type: "spring", stiffness: 220, damping: 20 }}
+        >
+          <p className="lead-copy text-lg">
+            I am <span className="font-bold text-accent">Nayem Sarkar</span>, a Software Engineer
+            and Backend Architect specializing in high-throughput distributed systems, type-safe
+            enterprise architectures, and cloud-ready backend services.
+          </p>
+          <p className="lead-copy mt-5">
+            My core stack is Java with Spring Boot and NestJS. I work across microservices,
+            persistence, security, asynchronous processing, payment integrations, and performance
+            optimization.
+          </p>
+        </motion.div>
+      </motion.section>
+
+      <motion.section
+        className="section-wrap py-20"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         variants={containerVariants}
       >
-        <motion.h2 className="text-3xl font-bold text-center md:text-left mb-8 border-b-2 border-gray-400 pb-2" variants={itemVariants}>
-          My Skills 💡
-        </motion.h2>
-        <div className="flex flex-wrap justify-center md:justify-start gap-3 md:gap-4">
-          {skills.map(skill => (
-            <motion.span
-              key={generateStableKey(skill, 0)} // FIX 3: Using stable key
-              className="px-4 py-2 bg-black text-white rounded-full font-medium transition transform hover:scale-105 hover:bg-amber-600 duration-300 cursor-default shadow-md"
+        <motion.div variants={itemVariants} className="mb-8">
+          <span className="section-kicker">Strengths</span>
+          <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">How I approach the work</h2>
+        </motion.div>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {strengths.map((item) => (
+            <motion.article
+              layout
+              key={item.title}
               variants={itemVariants}
+              whileHover={{ y: -10, scale: 1.015 }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: "spring", stiffness: 220, damping: 18 }}
+              className="surface-card motion-rise rounded-xl p-6"
             >
-              {skill}
-            </motion.span>
+              <h3 className="text-xl font-bold text-main">{item.title}</h3>
+              <p className="mt-4 leading-7 text-muted">{item.text}</p>
+            </motion.article>
           ))}
         </div>
       </motion.section>
 
-      {/* Experience Timeline */}
       <motion.section
-        className="mb-20 max-w-4xl mx-auto md:mx-0"
+        className="section-wrap grid gap-10 py-10 lg:grid-cols-[0.9fr_1.1fr]"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.18 }}
         variants={containerVariants}
       >
-        <motion.h2 className="text-3xl font-bold text-center md:text-left mb-8 border-b-2 border-gray-400 pb-2" variants={itemVariants}>
-          My Journey ⏱️
-        </motion.h2>
-        <div className="relative border-l-4 border-gray-900 ml-5 md:ml-8">
-          {experience.map((exp, index) => (
-            <motion.div key={generateStableKey(exp.role, index)} className="mb-10 pl-6 md:pl-10 relative" variants={itemVariants}>
-              {/* Timeline dot/marker */}
-              <div className="absolute -left-3 md:-left-[21px] top-1 w-6 h-6 bg-amber-600 rounded-full border-4 border-gray-900 z-10"></div>
-              
-              <h3 className="text-xl font-bold text-gray-900">{exp.role}</h3>
-              <span className="text-sm text-gray-600 font-semibold italic block mb-2">{exp.year} - ({exp.type})</span>
-              <p className="mt-1 text-gray-800">{exp.description}</p>
-            </motion.div>
-          ))}
-        </div>
+        <motion.div variants={itemVariants}>
+          <span className="section-kicker">Capability</span>
+          <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">Backend tools I use to ship</h2>
+          <p className="lead-copy mt-5">
+            The stack is intentionally focused: Spring Boot and NestJS for backend development,
+            mature data layers for persistence, strong API documentation, secure authentication,
+            and disciplined testing.
+          </p>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className="hero-panel rounded-3xl p-6">
+          <div className="flex flex-wrap gap-3">
+            {skills.map((skill, index) => (
+              <motion.span
+                key={generateStableKey(skill, index)}
+                className="skill-pill rounded-full px-4 py-2 text-sm font-semibold"
+                whileHover={{ y: -5, scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                {skill}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
       </motion.section>
 
-      {/* Achievements Section */}
       <motion.section
+        className="section-wrap grid gap-10 py-20 lg:grid-cols-[1.05fr_0.95fr]"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.18 }}
         variants={containerVariants}
-        className="max-w-4xl mx-auto md:mx-0"
       >
-        <motion.h2 className="text-3xl font-bold text-center md:text-left mb-8 border-b-2 border-gray-400 pb-2" variants={itemVariants}>
-          Achievements 🏆
-        </motion.h2>
-        <ul className="list-none space-y-4">
-          {achievements.map((item, index) => (
-            <motion.li 
-              key={generateStableKey(item, index)} // FIX 4: Using stable key
-              className="text-gray-800 font-medium flex items-start" 
-              variants={itemVariants}
-            >
-              <span className="text-amber-600 text-xl mr-3 mt-0.5">•</span> 
-              <span className="flex-1">{item}</span>
-            </motion.li>
-          ))}
-        </ul>
-      </motion.section>
+        <motion.div variants={itemVariants}>
+          <span className="section-kicker">Journey</span>
+          <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">Backend systems experience</h2>
+          <div className="mt-10 space-y-6 border-l border-accent-soft pl-6">
+            {experience.map((exp, index) => (
+              <motion.article
+                layout
+                key={generateStableKey(exp.role, index)}
+                variants={itemVariants}
+                className="relative surface-card motion-rise rounded-xl p-6"
+                whileHover={{ x: 8, scale: 1.01 }}
+                transition={{ type: "spring", stiffness: 230, damping: 20 }}
+              >
+                <span className="absolute -left-[35px] top-7 h-4 w-4 rounded-full border-4 border-[var(--color-bg)] bg-[var(--color-accent)]" />
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h3 className="text-xl font-bold text-main">{exp.role}</h3>
+                  <span className="rounded-full border border-accent-soft px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-accent">
+                    {exp.type}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-accent">{exp.company} | {exp.year}</p>
+                <p className="mt-4 leading-7 text-muted">{exp.description}</p>
+              </motion.article>
+            ))}
+          </div>
+        </motion.div>
 
+        <motion.div
+          variants={itemVariants}
+          className="hero-panel motion-breathe self-start rounded-3xl p-6 md:p-8"
+          whileHover={{ y: -6 }}
+          transition={{ type: "spring", stiffness: 220, damping: 22 }}
+        >
+          <span className="section-kicker">Highlights</span>
+          <ul className="mt-6 space-y-4">
+            {achievements.map((item, index) => (
+              <motion.li
+                key={generateStableKey(item, index)}
+                variants={itemVariants}
+                className="flex gap-3 leading-7 text-muted"
+              >
+                <span className="mt-2 h-2 w-2 flex-none rounded-full bg-[var(--color-accent)]" />
+                <span>{item}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+      </motion.section>
     </div>
   );
 };

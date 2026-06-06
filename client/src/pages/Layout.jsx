@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 
 const Layout = () => {
   const { scrollYProgress } = useScroll();
@@ -13,18 +14,26 @@ const Layout = () => {
 
   const location = useLocation();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location.pathname]);
+
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-amber-300 origin-left z-50"
+        className="animated-progress fixed top-0 left-0 right-0 h-1 origin-left z-50"
         style={{ scaleX }}
       />
       <Navbar />
       <main>
-        {/* AnimatePresence detects when the route changes and animates the page out. */}
-        {/* The key={location.pathname} is essential for it to work. */}
-        <AnimatePresence mode="wait">
-          <motion.div key={location.pathname}>
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 10, scale: 0.996 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.998, position: "absolute", width: "100%" }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          >
             <Outlet />
           </motion.div>
         </AnimatePresence>

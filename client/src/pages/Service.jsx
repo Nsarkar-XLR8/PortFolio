@@ -1,176 +1,187 @@
-
 import { useEffect } from "react";
+import { FaArrowRight, FaDatabase, FaLock, FaProjectDiagram, FaServer } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-
-// Helper function to create a stable key from the title
-const generateStableKey = (title) => title.toLowerCase().replace(/[^a-z0-9]/g, '-');
-
-// Inline SVG Icons (Replaced lucide-react to ensure compilation)
-// Note: SVG attributes like stroke, strokeWidth, fill, and className are controlled by the parent div's color classes.
-const IconCode = ({ size = 30 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="m18 16 4-4-4-4"/>
-    <path d="m6 8-4 4 4 4"/>
-  </svg>
-);
-
-const IconBot = ({ size = 30 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 8V4H8"/>
-    <rect width="16" height="12" x="4" y="8" rx="2"/>
-    <path d="M2 14h2"/>
-    <path d="M20 14h2"/>
-    <path d="M15 22v-4"/>
-    <path d="M9 22v-4"/>
-  </svg>
-);
-
-const IconServer = ({ size = 30 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="8" x="2" y="2" rx="2" ry="2"/>
-    <rect width="20" height="8" x="2" y="14" rx="2" ry="2"/>
-    <line x1="6" x2="6" y1="6" y2="6"/>
-    <line x1="6" x2="6" y1="18" y2="18"/>
-  </svg>
-);
-
-const IconPaintBucket = ({ size = 30 }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
-    <path d="M17 12a5 5 0 0 0-5-5h0a5 5 0 0 0-5 5v5h10v-5z"/>
-  </svg>
-);
+import { updateSeo } from "../utils/seo";
 
 const services = [
   {
-    icon: <IconCode size={30} />,
-    title: "Web Development",
-    description: "Build high-quality, responsive, and scalable client-side **React applications** using modern standards and best practices.",
+    icon: <FaServer />,
+    title: "Spring Boot Backend Development",
+    description:
+      "Enterprise-grade backend services built with Java, Spring Boot, Spring Data JPA, and production-ready module boundaries.",
+    points: ["Java", "Spring Boot", "Spring Data JPA"],
   },
   {
-    icon: <IconBot size={30} />,
-    title: "AI Integration",
-    description: "Integrate powerful **AI solutions** like chatbots, generative tools, and data analysis into your applications using modern APIs.",
+    icon: <FaProjectDiagram />,
+    title: "NestJS & Microservices Architecture",
+    description:
+      "Type-safe backend systems, modular NestJS services, distributed communication, and maintainable API boundaries.",
+    points: ["NestJS", "Microservices", "RabbitMQ"],
   },
   {
-    icon: <IconServer size={30} />,
-    title: "API Design & Consumption",
-    description: "Design robust, reliable, and secure **RESTful API structures** and efficiently consume them in your client-side applications.",
+    icon: <FaDatabase />,
+    title: "Data Persistence & Optimization",
+    description:
+      "Relational schema design, Hibernate ORM, Redis caching, recursive SQL logic, and query performance tuning.",
+    points: ["Hibernate", "PostgreSQL", "Redis"],
   },
   {
-    icon: <IconPaintBucket size={30} />,
-    title: "UI/UX Design",
-    description: "Craft modern, accessible, and user-friendly interfaces with a focus on usability and responsive design using **Tailwind CSS**.",
+    icon: <FaLock />,
+    title: "Secure APIs & Integrations",
+    description:
+      "REST APIs, OpenAPI documentation, OAuth2/JWT security, WebSockets, and reliable payment integrations.",
+    points: ["OAuth2", "JWT", "Stripe"],
   },
 ];
 
+const process = [
+  "Clarify domain rules, data flow, integration points, and reliability requirements.",
+  "Design service boundaries, schemas, API contracts, and asynchronous processing paths.",
+  "Build focused Spring Boot or NestJS services with tests, documentation, and security.",
+  "Optimize persistence, deployment, monitoring readiness, and production behavior.",
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.11, delayChildren: 0.08 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 const Service = () => {
   useEffect(() => {
-    document.title = "Services | Nayem Sarkar";
+    updateSeo({
+      title: "Backend Services | Nayem Sarkar",
+      description:
+        "Backend engineering services by Nayem Sarkar: Java Spring Boot development, NestJS architecture, microservices, secure APIs, persistence optimization, and integrations.",
+      path: "/services",
+    });
   }, []);
 
-  // Variants for orchestrating animations
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  // Variants for individual item animations (fade in up)
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
-
   return (
-    <div className="w-full min-h-screen bg-[#E1D4C1] text-gray-900 px-4 md:px-16 py-24">
-
-      {/* Hero / Intro */}
+    <div className="page-shell min-h-screen w-full px-4 py-28 md:px-8">
       <motion.section
-        className="text-center mb-16"
+        className="section-wrap text-center"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
-        <motion.h1 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900" variants={itemVariants}>
-          My Services 💡
+        <motion.span className="section-kicker justify-center" variants={itemVariants}>
+          Services
+        </motion.span>
+        <motion.h1 className="display-title mx-auto mt-5 max-w-4xl text-5xl md:text-7xl" variants={itemVariants}>
+          Backend systems built for scale, reliability, and clarity.
         </motion.h1>
-        <motion.p className="text-lg md:text-2xl max-w-3xl mx-auto text-gray-800" variants={itemVariants}>
-          I offer a range of services to help you build modern web applications and integrate cutting-edge AI solutions.
+        <motion.p className="lead-copy mx-auto mt-6 max-w-3xl text-lg md:text-xl" variants={itemVariants}>
+          I work on NestJS and Spring Boot only, helping teams design microservices,
+          secure APIs, optimized persistence layers, and reliable integration workflows.
         </motion.p>
       </motion.section>
 
-      {/* Services Cards */}
       <motion.section
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto"
+        className="section-wrap grid gap-5 py-20 md:grid-cols-2"
         initial="hidden"
-        // This ensures the animation only plays once when the section comes into view
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         variants={containerVariants}
       >
-        {services.map((service) => (
-          <motion.div
-            key={generateStableKey(service.title)} 
-            className="group bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transition-shadow duration-300 hover:shadow-2xl"
+        {services.map((service, index) => (
+          <motion.article
+            layout
+            key={service.title}
+            className="group surface-card motion-rise rounded-2xl p-6 md:p-8"
             variants={itemVariants}
-            // Smooth hover effect for cards
-            whileHover={{ y: -10, scale: 1.03 }} 
-            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            whileHover={{ y: -12, scale: 1.015 }}
+            whileTap={{ scale: 0.99 }}
+            transition={{ type: "spring", stiffness: 230, damping: 18 }}
           >
-            {/* Icon Wrapper: Controls the color and transition */}
-            {/* The SVG's stroke attribute is implicitly set to currentColor, which is controlled by the Tailwind text-amber-600 class */}
-            <div className="mb-4 text-amber-600 transition-colors duration-300 group-hover:text-amber-800">
-              {service.icon}
+            <div className="mb-8 flex items-start justify-between gap-6">
+              <div className="grid h-14 w-14 place-items-center rounded-2xl border border-accent-soft bg-[rgba(191,161,129,0.08)] text-2xl text-accent transition group-hover:text-[var(--color-hover)]">
+                {service.icon}
+              </div>
+              <span className="text-sm font-black text-accent">0{index + 1}</span>
             </div>
-            <h3 className="text-xl font-bold mb-2 text-gray-900 group-hover:text-amber-600 transition-colors duration-300">
+            <h2 className="text-2xl font-black text-main transition group-hover:text-[var(--color-hover)]">
               {service.title}
-            </h3>
-            <p className="text-gray-700 opacity-90">
-              {service.description}
-            </p>
-          </motion.div>
+            </h2>
+            <p className="mt-4 leading-7 text-muted">{service.description}</p>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {service.points.map((point) => (
+                <span key={point} className="skill-pill rounded-full px-3 py-2 text-sm font-semibold">
+                  {point}
+                </span>
+              ))}
+            </div>
+          </motion.article>
         ))}
       </motion.section>
 
-      {/* Call to Action */}
       <motion.section
-        className="mt-20 text-center"
+        className="section-wrap grid gap-8 pb-24 lg:grid-cols-[0.85fr_1.15fr]"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true, amount: 0.18 }}
         variants={containerVariants}
       >
-        <motion.h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900" variants={itemVariants}>
-          Ready to start your project? 🤝
-        </motion.h2>
-        <motion.p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-800" variants={itemVariants}>
-          I’m available for freelance or full-time opportunities. Let’s build something amazing together.
-        </motion.p>
         <motion.div variants={itemVariants}>
-          <Link
-            to="/contact"
-            className="inline-block px-8 py-3 bg-black text-white rounded-lg font-bold shadow-xl transition-transform transform hover:scale-105 hover:bg-amber-600 duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-600"
-          >
-            Contact Me
-          </Link>
+          <span className="section-kicker">Process</span>
+          <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">A clear path from domain logic to production</h2>
         </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          className="hero-panel motion-breathe rounded-3xl p-6 md:p-8"
+          whileHover={{ y: -6 }}
+          transition={{ type: "spring", stiffness: 220, damping: 22 }}
+        >
+          <div className="grid gap-4">
+            {process.map((step, index) => (
+              <motion.div
+                layout
+                key={step}
+                variants={itemVariants}
+                className="flex gap-4 rounded-2xl border border-accent-soft bg-[rgba(255,255,255,0.025)] p-4"
+                whileHover={{ x: 8, borderColor: "rgba(191,161,129,0.38)" }}
+                transition={{ type: "spring", stiffness: 240, damping: 20 }}
+              >
+                <span className="grid h-9 w-9 flex-none place-items-center rounded-full bg-[rgba(191,161,129,0.12)] text-sm font-black text-accent">
+                  {index + 1}
+                </span>
+                <p className="leading-7 text-muted">{step}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.section>
+
+      <motion.section
+        className="section-wrap pb-20 text-center"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="hero-panel rounded-3xl px-6 py-12">
+          <h2 className="text-3xl font-black text-main md:text-5xl">Ready to strengthen your backend?</h2>
+          <p className="lead-copy mx-auto mt-5 max-w-2xl">
+            Share the service, data, or integration problem you are solving and I will help turn it
+            into a practical backend plan.
+          </p>
+          <Link to="/contact" className="btn-primary mt-8 rounded-lg px-7 py-4 font-bold">
+            Contact Me <FaArrowRight aria-hidden="true" />
+          </Link>
+        </div>
       </motion.section>
     </div>
   );
 };
 
 export default Service;
-

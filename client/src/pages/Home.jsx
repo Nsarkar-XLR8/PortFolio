@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { FaArrowRight, FaDownload, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 import {
+  AnimatePresence,
   motion,
   useScroll,
   useTransform,
@@ -8,93 +10,73 @@ import {
   useSpring,
   useInView,
 } from "framer-motion";
+import { fetchGitHubRepos, getCachedRepos } from "../utils/githubRepos";
+import { updateSeo } from "../utils/seo";
 
-const skills = [
-  // Languages & Frameworks
-  "TypeScript",
-  "Node.js",
-  "NestJS",
-  "Express.js",
-  "Java",
-  "Python",
-  "C++",
+const roles = ["Software Engineer", "Backend Architect", "Spring Boot Specialist", "NestJS Engineer"];
 
-  // Backend Architecture
-  "Modular Architecture",
-  "Dependency Injection (DI)",
-  "Microservices",
-  "Object-Oriented Programming (OOP)",
-  "SOLID Principles",
-  "Domain-Driven Design (DDD)",
-
-  // Data Layer
-  "PostgreSQL",
-  "MySQL",
-  "MongoDB",
-  "Redis",
-  "Prisma",
-  "TypeORM",
-  "Mongoose",
-
-  // API & Integration
-  "RESTful API Design",
-  "Stripe API",
-  "JWT",
-  "Passport.js",
-  "WebSockets",
-  "Postman",
-
-  // Reliability & Testing
-  "Test-Driven Development (TDD)",
-  "Jest",
-  "Unit Testing",
-  "Integration Testing",
-  "ER Diagramming",
-
-  // Cloud & DevOps
-  "Docker",
-  "AWS EC2",
-  "AWS S3",
-  "Cloudinary",
-  "CI/CD Pipelines",
-  "GitHub Actions",
-  "Vercel",
-  "Git"
+const skillGroups = [
+  {
+    title: "Backend",
+    items: ["Java", "Spring Boot", "NestJS", "REST APIs", "Microservices", "Hibernate"],
+  },
+  {
+    title: "Systems & Data",
+    items: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "RabbitMQ", "Native SQL"],
+  },
+  {
+    title: "Delivery & Quality",
+    items: ["Docker", "Linux", "VPS", "CI/CD", "JUnit", "Mockito"],
+  },
 ];
 
+const stats = [
+  { value: "25%", label: "Query response improvement through data access optimization" },
+  { value: "100+", label: "Problems solved across platforms" },
+  { value: "99.9%", label: "Transaction reliability focus for payment workflows" },
+];
 
-// Reusable component for the 3D card effect (Excellent use of Framer Motion)
+const socials = [
+  { label: "GitHub", href: "https://github.com/Nsarkar-XLR8", icon: <FaGithub /> },
+  { label: "LinkedIn", href: "https://linkedin.com/in/nayem-sarkar", icon: <FaLinkedin /> },
+  { label: "Email", href: "mailto:nsarkar6251@gmail.com", icon: <FaEnvelope /> },
+];
+
+const sectionReveal = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const staggerGroup = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.09, delayChildren: 0.08 },
+  },
+};
+
 const ProjectCard = ({ repo, index }) => {
   const ref = useRef(null);
-  // Correct use of useInView for one-time animation triggering
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, { once: true, amount: 0.35 });
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 260, damping: 28, mass: 0.45 });
+  const mouseYSpring = useSpring(y, { stiffness: 260, damping: 28, mass: 0.45 });
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
 
-  // Excellent use of useSpring for smooth, physics-based mouse tracking
-  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 25, mass: 0.5 });
-  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 25, mass: 0.5 });
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12.5deg", "-12.5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12.5deg", "12.5deg"]);
-
-  // FIX 1: Event handlers are correctly memoized for performance
   const handleMouseMove = useCallback((e) => {
     if (!ref.current) return;
 
     requestAnimationFrame(() => {
       const rect = ref.current.getBoundingClientRect();
-      const width = rect.width;
-      const height = rect.height;
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      const xPct = mouseX / width - 0.5;
-      const yPct = mouseY / height - 0.5;
-
-      x.set(xPct);
-      y.set(yPct);
+      x.set((e.clientX - rect.left) / rect.width - 0.5);
+      y.set((e.clientY - rect.top) / rect.height - 0.5);
     });
   }, [x, y]);
 
@@ -104,336 +86,369 @@ const ProjectCard = ({ repo, index }) => {
   }, [x, y]);
 
   return (
-    <motion.div
+    <motion.article
+      layout
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}} // animate only when in view
-      transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d", // Necessary for 3D effect
-      }}
-      className="group relative bg-white rounded-xl overflow-hidden shadow-lg transition-shadow duration-500 hover:shadow-2xl"
+      initial={{ opacity: 0, y: 34, scale: 0.96 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.65, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className="group surface-card motion-rise rounded-xl overflow-hidden p-6"
+      whileTap={{ scale: 0.985 }}
     >
-      {/* Content */}
-      <div
-        style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
-        className="p-6 h-full flex flex-col"
-      >
-        <h3 className="text-xl font-bold mb-2 text-gray-900 group-hover:text-amber-600 transition-colors duration-300">
-            {repo.name.replace(/[-_]/g, ' ')} {/* Better name formatting */}
-        </h3>
-        <p className="text-gray-700 mb-4 flex-grow opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-          {repo.description || "No description available."}
-        </p>
-      </div>
+      <div className="flex h-full flex-col" style={{ transform: "translateZ(32px)" }}>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
+            Featured
+          </span>
+          <span className="h-2 w-2 rounded-full bg-[var(--color-accent)]" />
+        </div>
 
-      {/* Hover CTA/Links */}
-      <div
-        style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }}
-        className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 flex items-center justify-center p-6 opacity-0 group-hover:opacity-100 transition-all duration-300"
-      >
-        <div className="flex gap-4">
-          <a 
-            href={repo.html_url} 
-            target="_blank" 
+        <h3 className="mb-3 text-xl font-bold text-main transition-colors duration-300 group-hover:text-[var(--color-hover)]">
+          {repo.name.replace(/[-_]/g, " ")}
+        </h3>
+        <p className="mb-6 flex-grow text-sm leading-7 text-muted">
+          {repo.description || "A public repository from my recent engineering work."}
+        </p>
+
+        <div className="mt-auto flex items-center justify-between border-t border-accent-soft pt-5">
+          <span className="text-sm text-accent">{repo.language || "Code"}</span>
+          <a
+            href={repo.html_url}
+            target="_blank"
             rel="noopener noreferrer"
-            // ADDED: aria-label for accessibility
-            aria-label={`View ${repo.name} on GitHub`} 
-            className="px-4 py-2 bg-white text-black font-semibold rounded hover:bg-amber-400 hover:text-white transition transform hover:scale-105 duration-300">
-            GitHub
+            aria-label={`View ${repo.name} on GitHub`}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-main transition-colors hover:text-[var(--color-hover)]"
+          >
+            GitHub <FaArrowRight aria-hidden="true" />
           </a>
-          {repo.homepage && (
-            <a 
-              href={repo.homepage} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              aria-label={`View live demo of ${repo.name}`}
-              className="px-4 py-2 bg-white text-black font-semibold rounded hover:bg-amber-400 hover:text-white transition transform hover:scale-105 duration-300">
-              Live Demo
-            </a>
-          )}
         </div>
       </div>
-    </motion.div>
+    </motion.article>
   );
 };
 
+const ProjectSkeleton = ({ index }) => (
+  <motion.div
+    className="surface-card rounded-xl p-6"
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.05 }}
+  >
+    <div className="mb-6 h-4 w-24 rounded skeleton-line" />
+    <div className="mb-4 h-7 w-3/4 rounded skeleton-line" />
+    <div className="mb-2 h-4 w-full rounded skeleton-line" />
+    <div className="mb-8 h-4 w-5/6 rounded skeleton-line" />
+    <div className="flex justify-between border-t border-accent-soft pt-5">
+      <div className="h-5 w-20 rounded skeleton-line" />
+      <div className="h-5 w-16 rounded skeleton-line" />
+    </div>
+  </motion.div>
+);
+
 const Home = () => {
-  // State management for API fetch is robust
   const [repos, setRepos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [roleIndex, setRoleIndex] = useState(0);
 
   const username = "Nsarkar-XLR8";
-  const titleText = "Hi, I'm Nayem Sarkar";
-
-  useEffect(() => {
-    document.title = "Home | Nayem Sarkar";
-  }, []);
-
-  // Scroll Progress Bar (Excellent UX detail)
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress, scrollY } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
+  const portraitY = useTransform(scrollY, [0, 520], [0, -64]);
 
-  // Parallax Hero Image (Great visual touch)
-  const { scrollY } = useScroll();
-  const yRange = useTransform(scrollY, [0, 500], [0, -100]);
+  useEffect(() => {
+    updateSeo({
+      title: "Nayem Sarkar | Software Engineer & Backend Architect",
+      description:
+        "Official portfolio of Nayem Sarkar, Software Engineer and Backend Architect specializing in Java, Spring Boot, NestJS, microservices, secure APIs, and optimized data systems.",
+      path: "/",
+    });
+  }, []);
 
-  // FIX 4: Corrected and clean API fetch with AbortController for cleanup
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setRoleIndex((current) => (current + 1) % roles.length);
+    }, 2200);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
   useEffect(() => {
     const controller = new AbortController();
-    const signal = controller.signal;
+    const cachedRepos = getCachedRepos();
+
+    if (cachedRepos) {
+      setRepos(cachedRepos.slice(0, 3));
+      setIsLoading(false);
+    }
 
     const fetchRepos = async () => {
-      setIsLoading(true);
+      if (!cachedRepos) setIsLoading(true);
       setIsError(false);
       try {
-        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`, { signal });
-
-        if (!response.ok) {
-          throw new Error(`GitHub API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        
-        const filtered = data
-          .filter(repo => !repo.fork && repo.name.toLowerCase() !== "portfolio")
-          .slice(0, 3); // Limiting to top 3 for the home page
-
-        setRepos(filtered);
+        const freshRepos = await fetchGitHubRepos(username, controller.signal);
+        setRepos(freshRepos.slice(0, 3));
       } catch (err) {
-        if (err.name !== 'AbortError') {
+        if (err.name !== "AbortError") {
           console.error("Failed to fetch repositories:", err);
           setIsError(true);
         }
       } finally {
-        setIsLoading(false);
+        if (!controller.signal.aborted) setIsLoading(false);
       }
     };
 
     fetchRepos();
 
-    return () => {
-      controller.abort();
-    };
+    return () => controller.abort();
   }, [username]);
 
-  // Framer Motion Variants (Well-defined for staggering)
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
-  };
-
-  const characterVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
-  const skillsContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
-  };
-
-  const skillItemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
-
   return (
-    <div className="w-full min-h-screen relative" style={{ backgroundColor: "#E1D4C1" }}>
-      {/* Scroll Progress Bar */}
+    <div className="page-shell min-h-screen w-full">
       <motion.div
-        className="sticky md:fixed top-0 left-0 right-0 h-1 bg-amber-600 origin-[0%] z-50"
+        className="animated-progress sticky top-0 left-0 right-0 z-50 h-1 origin-[0%] md:fixed"
         style={{ scaleX }}
       />
-      
-      {/* Hero Section */}
-      <section className="h-screen flex flex-col md:flex-row items-center justify-center text-center md:text-left px-4 md:px-16 pt-20">
+
+      <section className="section-wrap grid min-h-screen items-center gap-12 pt-28 pb-16 lg:grid-cols-[1.08fr_0.92fr]">
         <motion.div
+          variants={staggerGroup}
           initial="hidden"
           animate="visible"
-          variants={containerVariants}
-          className="flex-1 space-y-6 z-10"
+          className="text-center lg:text-left"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-            {/* Staggered text animation is very engaging */}
-            {titleText.split("").map((char, index) => (
-              <motion.span
-                key={index}
-                variants={characterVariants}
-                style={{ display: 'inline-block' }}
-              >
-                {/* Use non-breaking space for proper character-by-character animation */}
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-          </h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.5 }}
-            className="text-lg md:text-2xl text-gray-800 max-w-lg"
+          <motion.span variants={sectionReveal} className="section-kicker">
+            Software Engineer | Backend Architect
+          </motion.span>
+
+          <motion.h1
+            variants={sectionReveal}
+            className="display-title mt-6 text-5xl sm:text-6xl lg:text-7xl"
           >
-            **Software Engineer -  BackEnd Architect** • Building scalable apps with TS, NestJs, Node, Express,MongoDB.
-          </motion.p>
+            Nayem Sarkar
+          </motion.h1>
+
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.8 }}
-            className="flex gap-4 justify-center md:justify-start flex-wrap"
+            variants={sectionReveal}
+            className="mt-5 flex justify-center lg:justify-start"
           >
-            {/* Call to Action Buttons (Excellent spring animations) */}
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
-              <Link to="/projects" className="block px-6 py-3 bg-black text-white rounded-lg font-semibold shadow-lg hover:bg-amber-600 transition-colors">
-                View My Work
-              </Link>
+            <motion.div
+              className="hero-panel motion-breathe min-h-12 overflow-hidden rounded-full px-5 py-3"
+              whileHover={{ scale: 1.035 }}
+              transition={{ type: "spring", stiffness: 250, damping: 18 }}
+            >
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={roles[roleIndex]}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -18 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="block text-sm font-bold uppercase tracking-[0.22em] text-accent"
+                >
+                  {roles[roleIndex]}
+                </motion.span>
+              </AnimatePresence>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
-              <Link to="/contact" className="block px-6 py-3 border border-black text-black rounded-lg font-semibold shadow-lg bg-white/50 backdrop-blur-sm hover:bg-gray-100 transition-colors">
-                Hire Me
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
-              <a
-                href="/resume/Nayem_Sarkar_A4_Resume.pdf"
-                target="_blank" // FIX 6: Open in new tab first
-                rel="noopener noreferrer"
-                download // Use browser default filename for clean download
-                className="block px-6 py-3 border-2 border-black rounded-lg font-semibold shadow-lg hover:bg-black hover:text-white transition"
+          </motion.div>
+
+          <motion.p
+            variants={sectionReveal}
+            className="lead-copy mx-auto mt-7 max-w-2xl text-lg lg:mx-0 lg:text-xl"
+          >
+            I design high-throughput backend systems, type-safe enterprise architectures,
+            and cloud-ready services using Java, Spring Boot, and NestJS.
+          </motion.p>
+
+          <motion.div
+            variants={sectionReveal}
+            className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start"
+          >
+            <Link to="/projects" className="btn-primary rounded-lg px-6 py-3 font-bold">
+              View Work <FaArrowRight aria-hidden="true" />
+            </Link>
+            <Link to="/contact" className="btn-secondary rounded-lg px-6 py-3 font-bold">
+              Contact Me <FaEnvelope aria-hidden="true" />
+            </Link>
+            <a
+              href="/resume/SWE_RESUME.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download
+              className="btn-secondary rounded-lg px-6 py-3 font-bold"
+            >
+              Resume <FaDownload aria-hidden="true" />
+            </a>
+          </motion.div>
+
+          <motion.div
+            variants={sectionReveal}
+            className="mt-8 flex justify-center gap-4 text-muted lg:justify-start"
+          >
+            {socials.map((social) => (
+              <motion.a
+                key={social.label}
+                href={social.href}
+                target={social.href.startsWith("mailto:") ? undefined : "_blank"}
+                rel={social.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                aria-label={social.label}
+                className="grid h-11 w-11 place-items-center rounded-full border border-accent-soft bg-[rgba(255,255,255,0.025)] text-lg transition hover:border-[rgba(191,161,129,0.42)] hover:text-[var(--color-hover)]"
+                whileHover={{ y: -5, scale: 1.1, rotate: -3 }}
+                whileTap={{ scale: 0.94 }}
+                transition={{ type: "spring", stiffness: 330, damping: 18 }}
               >
-                Download Resume
-              </a>
-            </motion.div>
+                {social.icon}
+              </motion.a>
+            ))}
           </motion.div>
         </motion.div>
 
-        {/* Hero Image */}
         <motion.div
-          style={{ y: yRange }} // Parallax effect
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-          className="flex-1 mt-10 md:mt-0 flex justify-center md:justify-end"
+          style={{ y: portraitY }}
+          initial={{ opacity: 0, y: 34, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="hero-panel motion-float-slow rounded-3xl p-4 sm:p-5"
+          whileHover={{ y: -10, rotate: 0.35 }}
+          whileTap={{ scale: 0.99 }}
         >
-          <div className="w-48 sm:w-60 md:w-72 h-48 sm:h-60 md:h-72 rounded-full overflow-hidden shadow-2xl">
+          <div className="image-frame overflow-hidden rounded-2xl">
             <motion.img
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 10 }}
-              src="/Nayem.jpeg" alt="Nayem Sarkar" className="w-full h-full object-cover" />
+              whileHover={{ scale: 1.035 }}
+              transition={{ type: "spring", stiffness: 180, damping: 18 }}
+              src="/Nayem.jpeg"
+              alt="Nayem Sarkar"
+              className="aspect-[4/5] w-full object-cover"
+            />
+          </div>
+          <div className="mt-5 grid grid-cols-3 gap-3">
+            {stats.map((stat) => (
+              <motion.div
+                key={stat.label}
+                className="metric-card text-center"
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                whileHover={{ y: -5, scale: 1.03 }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              >
+                <div className="text-2xl font-black text-accent">{stat.value}</div>
+                <p className="mt-1 text-xs leading-5 text-muted">{stat.label}</p>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </section>
 
-      {/* Skills Section (Clean implementation of whileInView) */}
-      <section className="py-24 px-4">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl font-bold text-center mb-12 text-gray-900"
-        >
-          Skills 🌟
-        </motion.h2>
-        <motion.div
-          variants={skillsContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="flex flex-wrap justify-center gap-4 max-w-3xl mx-auto"
-        >
-          {skills.map(skill => (
-            <motion.div variants={skillItemVariants} key={skill}>
-              <motion.span
-                whileHover={{ scale: 1.1, y: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="block px-4 py-2 bg-black text-white rounded-lg font-medium cursor-default shadow-md hover:bg-amber-600 transition-colors duration-300"
-              >
-                {skill}
-              </motion.span>
-            </motion.div>
-          ))}
+      <motion.section
+        className="section-wrap py-20"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={staggerGroup}
+      >
+        <motion.div variants={sectionReveal} className="mb-10 text-center">
+          <span className="section-kicker">Technical focus</span>
+          <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">
+            Built for distributed systems and practical delivery
+          </h2>
         </motion.div>
-      </section>
 
-      {/* Featured Projects Section */}
-      <section className="py-24 px-4" style={{ perspective: "1000px" }}>
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl font-bold text-center mb-12 text-gray-900"
-        >
-          Featured Projects ✨
-        </motion.h2>
+        <div className="grid gap-5 md:grid-cols-3">
+          {skillGroups.map((group) => (
+            <motion.article
+              layout
+              key={group.title}
+              variants={sectionReveal}
+              whileHover={{ y: -10, scale: 1.015 }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: "spring", stiffness: 220, damping: 18 }}
+              className="surface-card motion-rise rounded-xl p-6"
+            >
+              <h3 className="mb-5 text-xl font-bold text-main">{group.title}</h3>
+              <div className="flex flex-wrap gap-2">
+                {group.items.map((skill) => (
+                  <span key={skill} className="skill-pill rounded-full px-3 py-2 text-sm font-semibold">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </motion.section>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto min-h-[300px]">
-          {/* Conditional Rendering is correctly handled */}
-          {isLoading && (
-              <p className="col-span-full text-center text-lg text-gray-700">Loading projects from GitHub...</p>
+      <motion.section
+        className="section-wrap py-20"
+        style={{ perspective: "1100px" }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={staggerGroup}
+      >
+        <motion.div variants={sectionReveal} className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <div>
+            <span className="section-kicker">Selected repositories</span>
+            <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">
+              Recent engineering work
+            </h2>
+          </div>
+          <Link to="/projects" className="btn-secondary w-fit rounded-lg px-5 py-3 font-bold">
+            All Projects <FaArrowRight aria-hidden="true" />
+          </Link>
+        </motion.div>
+
+        <div className="grid min-h-[280px] grid-cols-1 gap-6 md:grid-cols-3">
+          {isLoading && repos.length === 0 && (
+            Array.from({ length: 3 }).map((_, index) => (
+              <ProjectSkeleton key={index} index={index} />
+            ))
           )}
 
-          {isError && (
-              <p className="col-span-full text-center text-lg text-red-600">
-                  Error loading projects. Please check the network or GitHub API rate limits.
-              </p>
+          {isError && repos.length === 0 && (
+            <p className="col-span-full text-center text-lg text-[var(--color-error)]">
+              Error loading projects. Please check the network or GitHub API rate limits.
+            </p>
           )}
-          
-          {!isLoading && !isError && repos.map((repo, index) => (
+
+          {repos.map((repo, index) => (
             <ProjectCard key={repo.id} repo={repo} index={index} />
           ))}
 
           {!isLoading && !isError && repos.length === 0 && (
-              <p className="col-span-full text-center text-lg text-gray-700">No featured repositories found.</p>
+            <p className="col-span-full text-center text-lg text-muted">No featured repositories found.</p>
           )}
         </div>
-        
-        <div className="text-center mt-12">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
-            <Link to="/projects" className="inline-block px-6 py-3 bg-black text-white rounded-lg font-semibold shadow-lg hover:bg-amber-600 transition-colors">
-              See All Projects
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+      </motion.section>
 
-      {/* Contact CTA */}
-      <section className="py-24 px-4 text-center">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl font-bold mb-6 text-gray-900"
-        >
-          Let's Work Together! 🚀
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-8 text-gray-800 max-w-xl mx-auto"
-        >
-          I’m available for freelance or full-time opportunities. Reach out to discuss your project.
-        </motion.p>
-        <motion.div whileHover={{ scale: 1.05, y: -5 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
-          <Link to="/contact"
-            className="inline-block px-8 py-4 bg-amber-600 text-black rounded-lg font-bold shadow-lg text-lg hover:bg-amber-400 transition-colors">
-            Contact Me
+      <motion.section
+        className="section-wrap py-24 text-center"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="hero-panel mx-auto max-w-4xl rounded-3xl px-6 py-12 md:px-12">
+          <span className="section-kicker justify-center">Next collaboration</span>
+          <h2 className="mt-5 text-3xl font-black text-main md:text-5xl">
+            Have a system that needs stronger backend architecture?
+          </h2>
+          <p className="lead-copy mx-auto mt-5 max-w-2xl">
+            I can help turn complex business requirements into reliable microservices,
+            secure APIs, optimized schemas, and production-ready backend workflows.
+          </p>
+          <Link to="/contact" className="btn-primary mt-8 rounded-lg px-7 py-4 font-bold">
+            Start a Conversation <FaArrowRight aria-hidden="true" />
           </Link>
-        </motion.div>
-      </section>
+        </div>
+      </motion.section>
     </div>
   );
 };

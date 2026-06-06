@@ -1,11 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false); // Mobile menu state
 
-  const menuItems = ["Home", "About", "Service", "Projects", "Contact"];
+  const menuItems = [
+    { label: "Home", to: "/" },
+    { label: "About", to: "/about" },
+    { label: "Services", to: "/services" },
+    { label: "Projects", to: "/projects" },
+    { label: "Contact", to: "/contact" },
+  ];
 
   // Variants for the main header animation
   const navVariants = {
@@ -38,28 +44,38 @@ const Navbar = () => {
 
   return (
     <motion.header
-      style={{ backgroundColor: "#7E102C", opacity: "95%" }}
-      className="fixed w-full top-0 z-50 text-amber-50 shadow-md"
+      className="fixed w-full top-0 z-50 nav-surface text-main"
       variants={navVariants}
       initial="hidden"
       animate="visible"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div className="section-wrap flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="font-bold text-xl hover:text-amber-300 transition-colors duration-300">
-          NayemS
-        </Link>
+        <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Link to="/" className="flex items-center gap-3 font-bold text-xl hover:text-[var(--color-hover)] transition-colors duration-300">
+            <span className="motion-float grid h-9 w-9 place-items-center rounded-full border border-accent-soft bg-[rgba(255,255,255,0.03)] text-sm text-accent">
+              NS
+            </span>
+            <span>Nayem</span>
+          </Link>
+        </motion.div>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex space-x-6">
+        <nav className="hidden items-center rounded-full border border-accent-soft bg-[rgba(255,255,255,0.025)] px-2 py-2 md:flex">
           {menuItems.map((item) => (
-            <Link
-              key={item}
-              to={`/${item === "Home" ? "" : item.toLowerCase()}`}
-              className="hover:text-amber-300 transition-colors duration-300 font-medium"
+            <NavLink
+              key={item.label}
+              to={item.to}
+              className={({ isActive }) =>
+                `rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                  isActive
+                    ? "bg-[rgba(191,161,129,0.12)] text-[var(--color-hover)]"
+                    : "text-muted hover:text-[var(--color-hover)]"
+                }`
+              }
             >
-              {item}
-            </Link>
+              {item.label}
+            </NavLink>
           ))}
         </nav>
 
@@ -67,7 +83,7 @@ const Navbar = () => {
         <div className="md:hidden">
           <button onClick={() => setOpen(!open)} className="focus:outline-none z-50 relative">
             <svg
-              className="w-6 h-6 text-amber-50"
+              className="w-6 h-6 text-main"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -90,21 +106,27 @@ const Navbar = () => {
       <AnimatePresence>
         {open && (
           <motion.nav
-            className="md:hidden bg-[#7E102C] px-4 pb-4 flex flex-col space-y-3 absolute w-full"
+            className="md:hidden nav-surface px-4 pb-4 flex flex-col space-y-3 absolute w-full"
             variants={mobileMenuVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
           >
             {menuItems.map((item) => (
-              <motion.div key={item} variants={mobileMenuItemVariants}>
-                <Link
-                  to={`/${item === "Home" ? "" : item.toLowerCase()}`}
-                  className="block hover:text-amber-300 transition-colors duration-300 font-medium"
+              <motion.div key={item.label} variants={mobileMenuItemVariants}>
+                <NavLink
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `block rounded-lg px-3 py-2 font-medium transition-colors duration-300 ${
+                      isActive
+                        ? "bg-[rgba(191,161,129,0.12)] text-[var(--color-hover)]"
+                        : "text-muted hover:text-[var(--color-hover)]"
+                    }`
+                  }
                   onClick={() => setOpen(false)} // Close menu on click
                 >
-                  {item}
-                </Link>
+                  {item.label}
+                </NavLink>
               </motion.div>
             ))}
           </motion.nav>

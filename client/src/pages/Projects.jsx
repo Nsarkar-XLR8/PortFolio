@@ -1,183 +1,197 @@
 import { useEffect, useState } from "react";
+import { FaArrowRight, FaCodeBranch, FaExclamationCircle, FaGithub, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { fetchGitHubRepos, getCachedRepos } from "../utils/githubRepos";
+import { updateSeo } from "../utils/seo";
 
-// Skeleton placeholder card
+const formatName = (name) =>
+  name
+    .replace(/[-_]/g, " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
 const SkeletonCard = ({ index }) => (
-  <motion.div 
-    key={`skeleton-${index}`} // Added key prop for clarity
-    className="group relative bg-white rounded-xl overflow-hidden shadow-lg p-6 animate-pulse"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
+  <motion.div
+    className="surface-card rounded-xl p-6"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.05 }}
   >
-    <div className="h-6 bg-gray-300 rounded w-3/4 mb-4"></div>
-    <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
-    <div className="h-4 bg-gray-300 rounded w-5/6 mb-6"></div>
-    <div className="mt-auto flex justify-between items-center pt-4 border-t border-gray-200">
-      <div className="h-6 bg-gray-300 rounded w-1/4"></div>
-      <div className="h-8 bg-gray-300 rounded w-1/3"></div>
+    <div className="mb-5 h-4 w-24 rounded skeleton-line" />
+    <div className="mb-4 h-7 w-3/4 rounded skeleton-line" />
+    <div className="mb-2 h-4 w-full rounded skeleton-line" />
+    <div className="mb-8 h-4 w-5/6 rounded skeleton-line" />
+    <div className="flex justify-between border-t border-accent-soft pt-5">
+      <div className="h-8 w-24 rounded skeleton-line" />
+      <div className="h-8 w-20 rounded skeleton-line" />
     </div>
   </motion.div>
 );
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.08 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 const Projects = () => {
   const [repos, setRepos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // FIX 2: Added state for explicit error handling
   const [isError, setIsError] = useState(false);
-  
   const username = "Nsarkar-XLR8";
 
   useEffect(() => {
-    document.title = "Projects | Nayem Sarkar";
-    setIsLoading(true);
-    setIsError(false); // Reset error state on new fetch
+    updateSeo({
+      title: "Projects | Nayem Sarkar",
+      description:
+        "Explore backend engineering projects by Nayem Sarkar, including Java, Spring Boot, NestJS, microservices, APIs, and data architecture work.",
+      path: "/projects",
+    });
+    const cachedRepos = getCachedRepos();
+    if (cachedRepos) {
+      setRepos(cachedRepos);
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+    setIsError(false);
 
-    // FIX 1: Use AbortController for cleanup
     const controller = new AbortController();
-    const signal = controller.signal;
 
     const fetchProjects = async () => {
       try {
-        const response = await fetch(
-          `https://api.github.com/users/${username}/repos?sort=updated`,
-          { signal }
-        );
-
-        if (!response.ok) {
-          // Check for specific errors like rate limiting (403) or not found (404)
-          throw new Error(`GitHub API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        const filtered = data.filter(
-          (repo) => !repo.fork && repo.name.toLowerCase() !== "portfolio"
-        );
-        
-        setRepos(filtered);
+        const freshRepos = await fetchGitHubRepos(username, controller.signal);
+        setRepos(freshRepos);
       } catch (err) {
-        if (err.name !== 'AbortError') {
-            console.error("Failed to fetch repositories:", err);
-            setIsError(true);
+        if (err.name !== "AbortError") {
+          console.error("Failed to fetch repositories:", err);
+          setIsError(true);
         }
       } finally {
-        setIsLoading(false);
+        if (!controller.signal.aborted) setIsLoading(false);
       }
     };
 
     fetchProjects();
 
-    // Cleanup function to abort the request
-    return () => {
-        controller.abort();
-    };
+    return () => controller.abort();
   }, [username]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-  };
-
   return (
-    <div
-      className="w-full min-h-screen py-24 px-4 sm:px-6 lg:px-8"
-      style={{ backgroundColor: "#E1D4C1" }}
-    >
-      <motion.h2
-        className="text-4xl font-bold text-center mb-12 text-gray-900"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+    <div className="page-shell min-h-screen w-full px-4 py-28 md:px-8">
+      <motion.section
+        className="section-wrap text-center"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
       >
-        My GitHub Projects 🚀
-      </motion.h2>
+        <motion.span className="section-kicker justify-center" variants={itemVariants}>
+          Work
+        </motion.span>
+        <motion.h1 className="display-title mx-auto mt-5 max-w-4xl text-5xl md:text-7xl" variants={itemVariants}>
+          Projects that show how I think and build.
+        </motion.h1>
+        <motion.p className="lead-copy mx-auto mt-6 max-w-3xl text-lg md:text-xl" variants={itemVariants}>
+          A live feed from GitHub, filtered to highlight original repositories and recent engineering work.
+        </motion.p>
+      </motion.section>
 
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto min-h-[50vh]" // Added min-height for better layout during loading
+      <motion.section
+        className="section-wrap grid min-h-[50vh] grid-cols-1 gap-6 py-20 sm:grid-cols-2 lg:grid-cols-3"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {/* Conditional Rendering Logic */}
-        {isLoading ? (
-          // Show 6 skeleton cards while loading
+        {isLoading && repos.length === 0 ? (
           Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} index={index} />)
-        ) : isError ? (
-            // Show explicit error message
-            <p className="text-center text-xl text-red-600 col-span-full py-10">
-                ⚠️ **Error:** Failed to load projects from GitHub. Check the network or API rate limits.
+        ) : isError && repos.length === 0 ? (
+          <div className="hero-panel col-span-full rounded-3xl p-8 text-center">
+            <p className="text-xl font-bold text-[var(--color-error)]">
+              Failed to load projects from GitHub.
             </p>
+            <p className="mt-3 text-muted">Please check the network or GitHub API rate limits.</p>
+          </div>
         ) : repos.length > 0 ? (
-          // Show the project cards
           repos.map((repo) => (
-            <motion.div
+            <motion.article
+              layout
               key={repo.id}
-              className="group relative bg-white rounded-xl overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-2xl"
+              className="group surface-card motion-rise flex min-h-[300px] flex-col rounded-xl p-6"
               variants={itemVariants}
-              whileHover={{
-                scale: 1.03, // Slightly reduced hover scale
-                y: -5,
-                boxShadow: "0px 15px 25px rgba(0,0,0,0.15)",
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              whileHover={{ y: -10, scale: 1.018, rotate: 0.18 }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: "spring", stiffness: 260, damping: 19 }}
             >
-              <div className="p-6 h-full flex flex-col">
-                <h3 className="text-xl font-bold mb-2 text-gray-900 group-hover:text-amber-600 transition-colors duration-300">
-                  {/* Nicely format repo name */}
-                  {repo.name.replace(/[-_]/g, " ").split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                </h3>
-                <p className="text-gray-700 mb-2 flex-grow opacity-90">
-                  {repo.description || "No description provided."}
-                </p>
-
-                {/* Automatic Metrics Section */}
-                <div className="text-gray-600 mb-4 font-medium flex gap-4 text-sm">
-                  <span title="Stars">⭐ {repo.stargazers_count}</span>
-                  <span title="Forks">🍴 {repo.forks_count}</span>
-                  <span title="Open Issues">🐛 {repo.open_issues_count}</span>
-                </div>
-
-                <div className="mt-auto flex justify-between items-center pt-4 border-t border-gray-200">
-                  <span className="text-sm font-semibold text-gray-800 bg-gray-200 px-2 py-1 rounded">
-                    {repo.language || "Code"}
-                  </span>
-                  <div className="flex gap-2">
-                    <a
-                      href={repo.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-1.5 bg-black text-white text-sm font-semibold rounded hover:bg-gray-800 transition-all duration-300"
-                    >
-                      GitHub
-                    </a>
-                    {repo.homepage && (
-                      <a
-                        href={repo.homepage}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-1.5 bg-amber-600 text-white text-sm font-semibold rounded hover:bg-amber-700 transition-all duration-300"
-                      >
-                        Live
-                      </a>
-                    )}
-                  </div>
-                </div>
+              <div className="mb-6 flex items-center justify-between">
+                <span className="rounded-full border border-accent-soft px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-accent">
+                  {repo.language || "Code"}
+                </span>
+                <motion.span
+                  className="text-xl text-muted transition group-hover:text-[var(--color-hover)]"
+                  whileHover={{ rotate: 8, scale: 1.12 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 18 }}
+                >
+                  <FaGithub />
+                </motion.span>
               </div>
-            </motion.div>
+
+              <h2 className="text-2xl font-black text-main transition group-hover:text-[var(--color-hover)]">
+                {formatName(repo.name)}
+              </h2>
+              <p className="mt-4 flex-grow leading-7 text-muted">
+                {repo.description || "No description provided for this repository yet."}
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-3 text-sm text-accent">
+                <span className="inline-flex items-center gap-2">
+                  <FaStar aria-hidden="true" /> {repo.stargazers_count}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <FaCodeBranch aria-hidden="true" /> {repo.forks_count}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <FaExclamationCircle aria-hidden="true" /> {repo.open_issues_count}
+                </span>
+              </div>
+
+              <div className="mt-6 flex items-center justify-between border-t border-accent-soft pt-5">
+                <a
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-main transition hover:text-[var(--color-hover)]"
+                >
+                  Repository <FaArrowRight aria-hidden="true" />
+                </a>
+                {repo.homepage && (
+                  <a
+                    href={repo.homepage}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary rounded-lg px-4 py-2 text-sm font-bold"
+                  >
+                    Live
+                  </a>
+                )}
+              </div>
+            </motion.article>
           ))
         ) : (
-            // Show message if no repos are found after a successful fetch
-            <p className="text-center text-xl text-gray-700 col-span-full py-10">
-                No public repositories found, or all repos are excluded by the filter.
-            </p>
+          <div className="hero-panel motion-breathe col-span-full rounded-3xl p-8 text-center">
+            <p className="text-xl font-bold text-main">No public repositories found.</p>
+            <p className="mt-3 text-muted">All repositories may be private or excluded by the filter.</p>
+          </div>
         )}
-      </motion.div>
+      </motion.section>
     </div>
   );
 };

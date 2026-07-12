@@ -129,7 +129,7 @@ const About = () => {
           transition={{ type: "spring", stiffness: 220, damping: 20 }}
         >
           <p className="lead-copy text-lg">
-            I am <span className="font-bold text-accent">Nayem Sarkar</span>, a Software Engineer
+            I am <span className="font-bold" style={{ color: "var(--color-accent)", textShadow: "0 0 0.5em rgba(0,240,255,0.3)" }}>Nayem Sarkar</span>, a Software Engineer
             and Backend Architect specializing in high-throughput distributed systems, type-safe
             enterprise architectures, and cloud-ready backend services.
           </p>
@@ -164,7 +164,12 @@ const About = () => {
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
               className="surface-card motion-rise rounded-xl p-6"
             >
-              <h3 className="text-xl font-bold text-main">{item.title}</h3>
+              <h3
+                className="text-xl font-bold text-main"
+                style={{ fontFamily: "JetBrains Mono, monospace" }}
+              >
+                {item.title}
+              </h3>
               <p className="mt-4 leading-7 text-muted">{item.text}</p>
             </motion.article>
           ))}
@@ -215,7 +220,7 @@ const About = () => {
         <motion.div variants={itemVariants}>
           <span className="section-kicker">Journey</span>
           <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">Backend systems experience</h2>
-          <div className="mt-10 space-y-6 border-l border-accent-soft pl-6">
+          <div className="mt-10 space-y-6 border-l pl-6" style={{ borderColor: "rgba(0,240,255,0.2)" }}>
             {experience.map((exp, index) => (
               <motion.article
                 layout
@@ -225,14 +230,30 @@ const About = () => {
                 whileHover={{ x: 8, scale: 1.01 }}
                 transition={{ type: "spring", stiffness: 230, damping: 20 }}
               >
-                <span className="absolute -left-[35px] top-7 h-4 w-4 rounded-full border-4 border-[var(--color-bg)] bg-[var(--color-accent)]" />
+                <span
+                  className="absolute -left-[35px] top-7 h-4 w-4 rounded-full border-4"
+                  style={{
+                    borderColor: "var(--color-bg)",
+                    background: "var(--color-accent)",
+                    boxShadow: "0 0 0.6em rgba(0,240,255,0.4)",
+                  }}
+                />
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <h3 className="text-xl font-bold text-main">{exp.role}</h3>
-                  <span className="rounded-full border border-accent-soft px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-accent">
+                  <span
+                    className="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.16em]"
+                    style={{
+                      border: "1px solid rgba(0,240,255,0.25)",
+                      color: "var(--color-accent)",
+                      fontFamily: "JetBrains Mono, monospace",
+                    }}
+                  >
                     {exp.type}
                   </span>
                 </div>
-                <p className="mt-2 text-sm font-semibold text-accent">{exp.company} | {exp.year}</p>
+                <p className="mt-2 text-sm font-semibold" style={{ color: "var(--color-accent)" }}>
+                  {exp.company} | {exp.year}
+                </p>
                 <p className="mt-4 leading-7 text-muted">{exp.description}</p>
               </motion.article>
             ))}
@@ -253,7 +274,13 @@ const About = () => {
                 variants={itemVariants}
                 className="flex gap-3 leading-7 text-muted"
               >
-                <span className="mt-2 h-2 w-2 flex-none rounded-full bg-[var(--color-accent)]" />
+                <span
+                  className="mt-2 h-2 w-2 flex-none rounded-full"
+                  style={{
+                    background: "var(--neon-green)",
+                    boxShadow: "0 0 0.4em rgba(0,255,136,0.5)",
+                  }}
+                />
                 <span>{item}</span>
               </motion.li>
             ))}

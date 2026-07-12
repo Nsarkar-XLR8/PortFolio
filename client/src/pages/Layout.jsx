@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import MatrixRain from "../components/MatrixRain";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 
@@ -20,6 +21,8 @@ const Layout = () => {
 
   return (
     <>
+      <MatrixRain />
+      <div className="scanline-overlay" />
       <motion.div
         className="animated-progress fixed top-0 left-0 right-0 h-1 origin-left z-50"
         style={{ scaleX }}

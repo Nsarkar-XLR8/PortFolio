@@ -96,7 +96,8 @@ const Contact = () => {
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-4 text-center font-bold text-[var(--color-success)]"
+          className="mt-4 text-center font-bold"
+          style={{ color: "var(--color-success)", textShadow: "0 0 0.5em rgba(0,255,136,0.3)" }}
         >
           Message sent successfully. I will be in touch soon.
         </motion.p>
@@ -108,7 +109,8 @@ const Contact = () => {
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-4 text-center font-bold text-[var(--color-error)]"
+          className="mt-4 text-center font-bold"
+          style={{ color: "var(--color-error)", textShadow: "0 0 0.5em rgba(255,0,170,0.3)" }}
         >
           Failed to send. Please check the fields and try again.
         </motion.p>
@@ -144,11 +146,21 @@ const Contact = () => {
                   whileTap={{ scale: 0.99 }}
                   transition={{ type: "spring", stiffness: 240, damping: 20 }}
                 >
-                  <span className="grid h-12 w-12 place-items-center rounded-xl border border-accent-soft bg-[rgba(191,161,129,0.08)] text-accent">
+                  <span
+                    className="grid h-12 w-12 place-items-center rounded-xl text-accent"
+                    style={{
+                      border: "1px solid rgba(0,240,255,0.15)",
+                      background: "rgba(0,240,255,0.06)",
+                      color: "var(--color-accent)",
+                    }}
+                  >
                     {item.icon}
                   </span>
                   <span>
-                    <span className="block text-sm font-bold uppercase tracking-[0.16em] text-accent">
+                    <span
+                      className="block text-sm font-bold uppercase tracking-[0.16em]"
+                      style={{ color: "var(--color-accent)", fontFamily: "JetBrains Mono, monospace" }}
+                    >
                       {item.label}
                     </span>
                     <span className="mt-1 block text-main">{item.value}</span>

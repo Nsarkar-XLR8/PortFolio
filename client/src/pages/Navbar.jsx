@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false); // Mobile menu state
+  const [open, setOpen] = useState(false);
 
   const menuItems = [
     { label: "Home", to: "/" },
@@ -13,7 +13,6 @@ const Navbar = () => {
     { label: "Contact", to: "/contact" },
   ];
 
-  // Variants for the main header animation
   const navVariants = {
     hidden: { y: -100 },
     visible: {
@@ -22,21 +21,19 @@ const Navbar = () => {
     },
   };
 
-  // Variants for the mobile menu container
   const mobileMenuVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        staggerChildren: 0.07, // Stagger the animation of menu items
+        staggerChildren: 0.07,
         delayChildren: 0.2,
       },
     },
     exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
   };
 
-  // Variants for individual mobile menu items
   const mobileMenuItemVariants = {
     hidden: { opacity: 0, y: -15 },
     visible: { opacity: 1, y: 0 },
@@ -50,18 +47,31 @@ const Navbar = () => {
       animate="visible"
     >
       <div className="section-wrap flex h-16 items-center justify-between">
-        {/* Logo */}
         <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Link to="/" className="flex items-center gap-3 font-bold text-xl hover:text-[var(--color-hover)] transition-colors duration-300">
-            <span className="motion-float grid h-9 w-9 place-items-center rounded-full border border-accent-soft bg-[rgba(255,255,255,0.03)] text-sm text-accent">
+          <Link to="/" className="flex items-center gap-3 font-bold text-xl transition-colors duration-300">
+            <span
+              className="motion-float grid h-9 w-9 place-items-center rounded-full text-sm font-black"
+              style={{
+                border: "1.5px solid rgba(0, 240, 255, 0.5)",
+                background: "rgba(0, 240, 255, 0.06)",
+                color: "var(--color-accent)",
+                boxShadow: "0 0 0.8em rgba(0, 240, 255, 0.15)",
+                fontFamily: "JetBrains Mono, monospace",
+              }}
+            >
               NS
             </span>
             <span>Nayem</span>
           </Link>
         </motion.div>
 
-        {/* Desktop Menu */}
-        <nav className="hidden items-center rounded-full border border-accent-soft bg-[rgba(255,255,255,0.025)] px-2 py-2 md:flex">
+        <nav
+          className="hidden items-center rounded-full px-2 py-2 md:flex"
+          style={{
+            border: "1px solid rgba(0, 240, 255, 0.1)",
+            background: "rgba(0, 240, 255, 0.02)",
+          }}
+        >
           {menuItems.map((item) => (
             <NavLink
               key={item.label}
@@ -69,9 +79,14 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
                   isActive
-                    ? "bg-[rgba(191,161,129,0.12)] text-[var(--color-hover)]"
-                    : "text-muted hover:text-[var(--color-hover)]"
+                    ? "text-[var(--color-accent)]"
+                    : "text-muted hover:text-[var(--color-accent)]"
                 }`
+              }
+              style={({ isActive }) =>
+                isActive
+                  ? { background: "rgba(0, 240, 255, 0.08)", textShadow: "0 0 0.5em rgba(0, 240, 255, 0.3)" }
+                  : {}
               }
             >
               {item.label}
@@ -79,7 +94,6 @@ const Navbar = () => {
           ))}
         </nav>
 
-        {/* Mobile Hamburger */}
         <div className="md:hidden">
           <button onClick={() => setOpen(!open)} className="focus:outline-none z-50 relative">
             <svg
@@ -89,7 +103,6 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Animated path for the hamburger/close icon */}
               <motion.path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -102,7 +115,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu with Animation */}
       <AnimatePresence>
         {open && (
           <motion.nav
@@ -119,11 +131,16 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `block rounded-lg px-3 py-2 font-medium transition-colors duration-300 ${
                       isActive
-                        ? "bg-[rgba(191,161,129,0.12)] text-[var(--color-hover)]"
-                        : "text-muted hover:text-[var(--color-hover)]"
+                        ? "text-[var(--color-accent)]"
+                        : "text-muted hover:text-[var(--color-accent)]"
                     }`
                   }
-                  onClick={() => setOpen(false)} // Close menu on click
+                  style={({ isActive }) =>
+                    isActive
+                      ? { background: "rgba(0, 240, 255, 0.08)", textShadow: "0 0 0.5em rgba(0, 240, 255, 0.3)" }
+                      : {}
+                  }
+                  onClick={() => setOpen(false)}
                 >
                   {item.label}
                 </NavLink>
@@ -136,4 +153,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar
+export default Navbar;

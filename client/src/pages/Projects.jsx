@@ -82,7 +82,6 @@ const Projects = () => {
     };
 
     fetchProjects();
-
     return () => controller.abort();
   }, [username]);
 
@@ -132,11 +131,18 @@ const Projects = () => {
               transition={{ type: "spring", stiffness: 260, damping: 19 }}
             >
               <div className="mb-6 flex items-center justify-between">
-                <span className="rounded-full border border-accent-soft px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-accent">
+                <span
+                  className="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.16em]"
+                  style={{
+                    border: "1px solid rgba(0,240,255,0.25)",
+                    color: "var(--neon-cyan)",
+                    fontFamily: "JetBrains Mono, monospace",
+                  }}
+                >
                   {repo.language || "Code"}
                 </span>
                 <motion.span
-                  className="text-xl text-muted transition group-hover:text-[var(--color-hover)]"
+                  className="text-xl text-muted transition group-hover:text-[var(--color-accent)]"
                   whileHover={{ rotate: 8, scale: 1.12 }}
                   transition={{ type: "spring", stiffness: 320, damping: 18 }}
                 >
@@ -144,14 +150,14 @@ const Projects = () => {
                 </motion.span>
               </div>
 
-              <h2 className="text-2xl font-black text-main transition group-hover:text-[var(--color-hover)]">
+              <h2 className="text-2xl font-black text-main transition group-hover:text-[var(--color-accent)]">
                 {formatName(repo.name)}
               </h2>
               <p className="mt-4 flex-grow leading-7 text-muted">
                 {repo.description || "No description provided for this repository yet."}
               </p>
 
-              <div className="mt-7 flex flex-wrap gap-3 text-sm text-accent">
+              <div className="mt-7 flex flex-wrap gap-3 text-sm" style={{ color: "var(--neon-cyan)" }}>
                 <span className="inline-flex items-center gap-2">
                   <FaStar aria-hidden="true" /> {repo.stargazers_count}
                 </span>
@@ -168,7 +174,7 @@ const Projects = () => {
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-bold text-main transition hover:text-[var(--color-hover)]"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-main transition hover:text-[var(--color-accent)]"
                 >
                   Repository <FaArrowRight aria-hidden="true" />
                 </a>

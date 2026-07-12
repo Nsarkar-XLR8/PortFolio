@@ -104,12 +104,29 @@ const Service = () => {
             transition={{ type: "spring", stiffness: 230, damping: 18 }}
           >
             <div className="mb-8 flex items-start justify-between gap-6">
-              <div className="grid h-14 w-14 place-items-center rounded-2xl border border-accent-soft bg-[rgba(191,161,129,0.08)] text-2xl text-accent transition group-hover:text-[var(--color-hover)]">
+              <div
+                className="grid h-14 w-14 place-items-center rounded-2xl text-2xl transition group-hover:text-[var(--color-accent)]"
+                style={{
+                  border: "1px solid rgba(0,240,255,0.15)",
+                  background: "rgba(0,240,255,0.06)",
+                  color: "var(--color-accent)",
+                  boxShadow: "0 0 1em rgba(0,240,255,0.1)",
+                }}
+              >
                 {service.icon}
               </div>
-              <span className="text-sm font-black text-accent">0{index + 1}</span>
+              <span
+                className="text-sm font-black"
+                style={{
+                  color: "var(--neon-cyan)",
+                  fontFamily: "JetBrains Mono, monospace",
+                  textShadow: "0 0 0.5em rgba(0,240,255,0.4)",
+                }}
+              >
+                0{index + 1}
+              </span>
             </div>
-            <h2 className="text-2xl font-black text-main transition group-hover:text-[var(--color-hover)]">
+            <h2 className="text-2xl font-black text-main transition group-hover:text-[var(--color-accent)]">
               {service.title}
             </h2>
             <p className="mt-4 leading-7 text-muted">{service.description}</p>
@@ -148,11 +165,23 @@ const Service = () => {
                 layout
                 key={step}
                 variants={itemVariants}
-                className="flex gap-4 rounded-2xl border border-accent-soft bg-[rgba(255,255,255,0.025)] p-4"
-                whileHover={{ x: 8, borderColor: "rgba(191,161,129,0.38)" }}
+                className="flex gap-4 rounded-2xl p-4"
+                style={{
+                  border: "1px solid var(--color-border)",
+                  background: "rgba(0,240,255,0.02)",
+                }}
+                whileHover={{ x: 8, borderColor: "rgba(0,240,255,0.35)" }}
                 transition={{ type: "spring", stiffness: 240, damping: 20 }}
               >
-                <span className="grid h-9 w-9 flex-none place-items-center rounded-full bg-[rgba(191,161,129,0.12)] text-sm font-black text-accent">
+                <span
+                  className="grid h-9 w-9 flex-none place-items-center rounded-full text-sm font-black"
+                  style={{
+                    background: "rgba(0,240,255,0.1)",
+                    color: "var(--neon-cyan)",
+                    fontFamily: "JetBrains Mono, monospace",
+                    boxShadow: "0 0 0.5em rgba(0,240,255,0.15)",
+                  }}
+                >
                   {index + 1}
                 </span>
                 <p className="leading-7 text-muted">{step}</p>

@@ -48,7 +48,16 @@ const Footer = () => {
         >
           <motion.div variants={itemVariants}>
             <Link to="/" className="inline-flex items-center gap-3 text-2xl font-black">
-              <span className="motion-float grid h-10 w-10 place-items-center rounded-full border border-accent-soft bg-[rgba(191,161,129,0.08)] text-sm text-accent">
+              <span
+                className="motion-float grid h-10 w-10 place-items-center rounded-full text-sm font-black"
+                style={{
+                  border: "1.5px solid rgba(0, 240, 255, 0.5)",
+                  background: "rgba(0, 240, 255, 0.06)",
+                  color: "var(--color-accent)",
+                  boxShadow: "0 0 0.8em rgba(0, 240, 255, 0.15)",
+                  fontFamily: "JetBrains Mono, monospace",
+                }}
+              >
                 NS
               </span>
               Nayem Sarkar
@@ -65,7 +74,18 @@ const Footer = () => {
                 <Link
                   key={link.name}
                   to={link.to}
-                  className="rounded-full border border-accent-soft px-4 py-2 text-sm font-semibold text-muted transition hover:border-[rgba(191,161,129,0.42)] hover:text-[var(--color-hover)]"
+                  className="rounded-full px-4 py-2 text-sm font-semibold text-muted transition"
+                  style={{ border: "1px solid var(--color-border)" }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(0,240,255,0.4)";
+                    e.currentTarget.style.color = "var(--color-accent)";
+                    e.currentTarget.style.boxShadow = "0 0 0.5em rgba(0,240,255,0.1)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "var(--color-border)";
+                    e.currentTarget.style.color = "";
+                    e.currentTarget.style.boxShadow = "";
+                  }}
                 >
                   {link.name}
                 </Link>
@@ -79,8 +99,16 @@ const Footer = () => {
                   target={link.url.startsWith("mailto:") ? undefined : "_blank"}
                   rel={link.url.startsWith("mailto:") ? undefined : "noopener noreferrer"}
                   aria-label={link.label}
-                  className="grid h-11 w-11 place-items-center rounded-full border border-accent-soft text-lg text-muted transition hover:border-[rgba(191,161,129,0.42)] hover:text-[var(--color-hover)]"
-                  whileHover={{ scale: 1.12, y: -4, rotate: 3 }}
+                  className="grid h-11 w-11 place-items-center rounded-full text-lg text-muted transition"
+                  style={{ border: "1px solid var(--color-border)" }}
+                  whileHover={{
+                    scale: 1.12,
+                    y: -4,
+                    rotate: 3,
+                    color: "var(--color-accent)",
+                    borderColor: "rgba(0,240,255,0.5)",
+                    boxShadow: "0 0 1em rgba(0,240,255,0.3)",
+                  }}
                   whileTap={{ scale: 0.94 }}
                   transition={{ type: "spring", stiffness: 300, damping: 18 }}
                 >
@@ -93,7 +121,8 @@ const Footer = () => {
 
         <motion.div
           variants={itemVariants}
-          className="flex flex-col gap-3 border-t border-accent-soft py-5 text-sm text-muted md:flex-row md:items-center md:justify-between"
+          className="flex flex-col gap-3 border-t py-5 text-sm text-muted md:flex-row md:items-center md:justify-between"
+          style={{ borderColor: "var(--color-border)" }}
         >
           <span>&copy; {new Date().getFullYear()} Nayem Sarkar. All rights reserved.</span>
           <span>Dhaka, Bangladesh</span>

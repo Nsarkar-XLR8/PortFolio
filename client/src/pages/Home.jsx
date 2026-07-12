@@ -12,8 +12,8 @@ import {
 } from "framer-motion";
 import { fetchGitHubRepos, getCachedRepos } from "../utils/githubRepos";
 import { updateSeo } from "../utils/seo";
-
-const roles = ["Software Engineer", "Backend Architect", "Spring Boot Specialist", "NestJS Engineer"];
+import TerminalHero from "../components/TerminalHero";
+import GlitchText from "../components/GlitchText";
 
 const skillGroups = [
   {
@@ -72,7 +72,6 @@ const ProjectCard = ({ repo, index }) => {
 
   const handleMouseMove = useCallback((e) => {
     if (!ref.current) return;
-
     requestAnimationFrame(() => {
       const rect = ref.current.getBoundingClientRect();
       x.set((e.clientX - rect.left) / rect.width - 0.5);
@@ -100,13 +99,16 @@ const ProjectCard = ({ repo, index }) => {
     >
       <div className="flex h-full flex-col" style={{ transform: "translateZ(32px)" }}>
         <div className="mb-6 flex items-center justify-between gap-4">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
+          <span
+            className="text-xs font-bold uppercase tracking-[0.2em]"
+            style={{ fontFamily: "JetBrains Mono, monospace", color: "var(--color-accent)" }}
+          >
             Featured
           </span>
-          <span className="h-2 w-2 rounded-full bg-[var(--color-accent)]" />
+          <span className="h-2 w-2 rounded-full" style={{ background: "var(--neon-green)", boxShadow: "0 0 0.5em rgba(0,255,136,0.5)" }} />
         </div>
 
-        <h3 className="mb-3 text-xl font-bold text-main transition-colors duration-300 group-hover:text-[var(--color-hover)]">
+        <h3 className="mb-3 text-xl font-bold text-main transition-colors duration-300 group-hover:text-[var(--color-accent)]">
           {repo.name.replace(/[-_]/g, " ")}
         </h3>
         <p className="mb-6 flex-grow text-sm leading-7 text-muted">
@@ -114,13 +116,15 @@ const ProjectCard = ({ repo, index }) => {
         </p>
 
         <div className="mt-auto flex items-center justify-between border-t border-accent-soft pt-5">
-          <span className="text-sm text-accent">{repo.language || "Code"}</span>
+          <span className="text-sm" style={{ color: "var(--neon-cyan)", fontFamily: "JetBrains Mono, monospace" }}>
+            {repo.language || "Code"}
+          </span>
           <a
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`View ${repo.name} on GitHub`}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-main transition-colors hover:text-[var(--color-hover)]"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-main transition-colors hover:text-[var(--color-accent)]"
           >
             GitHub <FaArrowRight aria-hidden="true" />
           </a>
@@ -152,7 +156,6 @@ const Home = () => {
   const [repos, setRepos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [roleIndex, setRoleIndex] = useState(0);
 
   const username = "Nsarkar-XLR8";
   const { scrollYProgress, scrollY } = useScroll();
@@ -170,14 +173,6 @@ const Home = () => {
         "Official portfolio of Nayem Sarkar, Software Engineer and Backend Architect specializing in Java, Spring Boot, NestJS, microservices, secure APIs, and optimized data systems.",
       path: "/",
     });
-  }, []);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setRoleIndex((current) => (current + 1) % roles.length);
-    }, 2200);
-
-    return () => window.clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -206,17 +201,11 @@ const Home = () => {
     };
 
     fetchRepos();
-
     return () => controller.abort();
   }, [username]);
 
   return (
     <div className="page-shell min-h-screen w-full">
-      <motion.div
-        className="animated-progress sticky top-0 left-0 right-0 z-50 h-1 origin-[0%] md:fixed"
-        style={{ scaleX }}
-      />
-
       <section className="section-wrap grid min-h-screen items-center gap-12 pt-28 pb-16 lg:grid-cols-[1.08fr_0.92fr]">
         <motion.div
           variants={staggerGroup}
@@ -225,38 +214,18 @@ const Home = () => {
           className="text-center lg:text-left"
         >
           <motion.span variants={sectionReveal} className="section-kicker">
-            Software Engineer | Backend Architect
+            Software Engineer // Backend Architect
           </motion.span>
 
           <motion.h1
             variants={sectionReveal}
             className="display-title mt-6 text-5xl sm:text-6xl lg:text-7xl"
           >
-            Nayem Sarkar
+            <GlitchText>Nayem Sarkar</GlitchText>
           </motion.h1>
 
-          <motion.div
-            variants={sectionReveal}
-            className="mt-5 flex justify-center lg:justify-start"
-          >
-            <motion.div
-              className="hero-panel motion-breathe min-h-12 overflow-hidden rounded-full px-5 py-3"
-              whileHover={{ scale: 1.035 }}
-              transition={{ type: "spring", stiffness: 250, damping: 18 }}
-            >
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={roles[roleIndex]}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -18 }}
-                  transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="block text-sm font-bold uppercase tracking-[0.22em] text-accent"
-                >
-                  {roles[roleIndex]}
-                </motion.span>
-              </AnimatePresence>
-            </motion.div>
+          <motion.div variants={sectionReveal} className="mt-5 flex justify-center lg:justify-start">
+            <TerminalHero />
           </motion.div>
 
           <motion.p
@@ -290,7 +259,7 @@ const Home = () => {
 
           <motion.div
             variants={sectionReveal}
-            className="mt-8 flex justify-center gap-4 text-muted lg:justify-start"
+            className="mt-8 flex justify-center gap-4 lg:justify-start"
           >
             {socials.map((social) => (
               <motion.a
@@ -299,8 +268,20 @@ const Home = () => {
                 target={social.href.startsWith("mailto:") ? undefined : "_blank"}
                 rel={social.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
                 aria-label={social.label}
-                className="grid h-11 w-11 place-items-center rounded-full border border-accent-soft bg-[rgba(255,255,255,0.025)] text-lg transition hover:border-[rgba(191,161,129,0.42)] hover:text-[var(--color-hover)]"
-                whileHover={{ y: -5, scale: 1.1, rotate: -3 }}
+                className="grid h-11 w-11 place-items-center rounded-full text-lg transition"
+                style={{
+                  border: "1px solid rgba(0, 240, 255, 0.15)",
+                  background: "rgba(0, 240, 255, 0.03)",
+                  color: "var(--color-text-muted)",
+                }}
+                whileHover={{
+                  y: -5,
+                  scale: 1.1,
+                  rotate: -3,
+                  boxShadow: "0 0 1em rgba(0, 240, 255, 0.3)",
+                  color: "var(--color-accent)",
+                  borderColor: "rgba(0, 240, 255, 0.5)",
+                }}
                 whileTap={{ scale: 0.94 }}
                 transition={{ type: "spring", stiffness: 330, damping: 18 }}
               >
@@ -339,7 +320,16 @@ const Home = () => {
                 whileHover={{ y: -5, scale: 1.03 }}
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
               >
-                <div className="text-2xl font-black text-accent">{stat.value}</div>
+                <div
+                  className="text-2xl font-black"
+                  style={{
+                    color: "var(--color-accent)",
+                    textShadow: "0 0 0.5em rgba(0, 240, 255, 0.4)",
+                    fontFamily: "JetBrains Mono, monospace",
+                  }}
+                >
+                  {stat.value}
+                </div>
                 <p className="mt-1 text-xs leading-5 text-muted">{stat.label}</p>
               </motion.div>
             ))}
@@ -372,7 +362,12 @@ const Home = () => {
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
               className="surface-card motion-rise rounded-xl p-6"
             >
-              <h3 className="mb-5 text-xl font-bold text-main">{group.title}</h3>
+              <h3
+                className="mb-5 text-xl font-bold text-main"
+                style={{ fontFamily: "JetBrains Mono, monospace" }}
+              >
+                {group.title}
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {group.items.map((skill) => (
                   <span key={skill} className="skill-pill rounded-full px-3 py-2 text-sm font-semibold">

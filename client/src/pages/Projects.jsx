@@ -51,9 +51,11 @@ const Projects = () => {
 
   useEffect(() => {
     updateSeo({
-      title: "Projects | Nayem Sarkar",
+      title: "Projects by Nayem Sarkar | Java, Spring Boot, NestJS",
       description:
         "Explore backend engineering projects by Nayem Sarkar, including Java, Spring Boot, NestJS, microservices, APIs, and data architecture work.",
+      keywords:
+        "Nayem Sarkar projects, Nayem Sarkar GitHub, Java projects, Spring Boot projects, NestJS projects, backend developer portfolio, microservices projects",
       path: "/projects",
     });
     const cachedRepos = getCachedRepos();

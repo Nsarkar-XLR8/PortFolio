@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { updateSeo } from "../utils/seo";
+
+const SkillRadar = lazy(() => import("../components/SkillRadar"));
+const ContributionHeatmap = lazy(() => import("../components/ContributionHeatmap"));
 
 const generateStableKey = (str, index) => `${str.toLowerCase().replace(/[^a-z0-9]/g, "-")}-${index}`;
 
@@ -102,9 +105,11 @@ const itemVariants = {
 const About = () => {
   useEffect(() => {
     updateSeo({
-      title: "About Nayem Sarkar | Backend Architect",
+      title: "About Nayem Sarkar | Backend Architect & Software Engineer",
       description:
         "Learn about Nayem Sarkar, a Software Engineer and Backend Architect focused on Spring Boot, NestJS, distributed systems, microservices, Hibernate, Redis, and secure API design.",
+      keywords:
+        "Nayem Sarkar about, Nayem Sarkar skills, Nayem Sarkar experience, Backend Architect Bangladesh, Java Spring Boot developer, microservices architect",
       path: "/about",
     });
   }, []);
@@ -286,6 +291,30 @@ const About = () => {
             ))}
           </ul>
         </motion.div>
+      </motion.section>
+
+      <motion.section
+        className="section-wrap py-20"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={containerVariants}
+      >
+        <motion.div variants={itemVariants} className="mb-10 text-center">
+          <span className="section-kicker">Analytics</span>
+          <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">
+            Skills and activity
+          </h2>
+        </motion.div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <Suspense fallback={<div className="surface-card rounded-xl p-6 h-[380px]" />}>
+            <SkillRadar />
+          </Suspense>
+          <Suspense fallback={<div className="surface-card rounded-xl p-6 h-[380px]" />}>
+            <ContributionHeatmap />
+          </Suspense>
+        </div>
       </motion.section>
     </div>
   );

@@ -421,14 +421,17 @@ a {
 
 .motion-float-slow {
   animation: subtleFloat 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 .motion-rise {
   animation: riseIn 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
 }
 
 .motion-breathe {
   animation: breathe 4.8s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* ─── Terminal Hero ─── */
@@ -684,4 +687,163 @@ a {
   80% { clip-path: inset(45% 0 25% 0); transform: translate(-2px, -1px); }
   90% { clip-path: inset(72% 0 8% 0); transform: translate(1px, 2px); }
   100% { clip-path: inset(20% 0 55% 0); transform: translate(-1px, 0px); }
+}
+
+/* ─── Orbital Ring ─── */
+.orbital-ring-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.orbital-ring-svg {
+  width: 120%;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbital-ring-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 60%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 240, 255, 0.06), transparent 70%);
+  filter: blur(20px);
+}
+
+/* ─── Solar System (3D) ─── */
+.solar-system-container {
+  width: 100%;
+  height: 420px;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.03), transparent 70%);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.solar-system-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.solar-system-loading .orbit-spinner {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 240, 255, 0.1);
+  border-top-color: var(--color-accent);
+  animation: orbit-spin 1.2s linear infinite;
+}
+
+.solar-system-loading .orbit-spinner::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent);
+}
+
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+.solar-system-loading span {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 767px) {
+  .solar-system-container {
+    height: 320px;
+  }
+}
+
+/* ─── Solar System Mobile ─── */
+.solar-system-mobile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 1rem;
+  border-radius: 1rem;
+  background: radial-gradient(ellipse at left, rgba(0, 240, 255, 0.03), transparent 70%);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.solar-system-mobile-orbit-line {
+  position: absolute;
+  left: 2.2rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.2), rgba(0, 240, 255, 0.2), transparent);
+}
+
+.solar-system-mobile-planet {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  z-index: 1;
+}
+
+.solar-system-mobile-dot {
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.solar-system-mobile-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Contribution Heatmap ─── */
+.contribution-heatmap-svg rect {
+  transition: opacity 180ms ease;
+}
+
+.contribution-heatmap-svg rect:hover {
+  opacity: 0.8;
+  stroke: rgba(0, 240, 255, 0.4);
+  stroke-width: 1;
+}
+
+/* ─── Recharts overrides ─── */
+.recharts-default-tooltip {
+  background: rgba(10, 10, 15, 0.95) !important;
+  border: 1px solid rgba(0, 240, 255, 0.3) !important;
+  border-radius: 0.5rem !important;
+}
+
+.recharts-tooltip-label {
+  color: var(--color-accent) !important;
+  font-family: "JetBrains Mono", monospace !important;
 }

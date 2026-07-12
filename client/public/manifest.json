@@ -1,0 +1,21 @@
+{
+  "name": "Nayem Sarkar | Software Engineer & Backend Architect",
+  "short_name": "Nayem Sarkar",
+  "description": "Portfolio of Nayem Sarkar, a Software Engineer and Backend Architect specializing in Java, Spring Boot, NestJS, microservices, and secure APIs.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    {
+      "src": "/icon2.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon2.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

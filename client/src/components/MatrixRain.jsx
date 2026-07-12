@@ -13,6 +13,7 @@ const MatrixRain = () => {
     let columns;
     let drops;
     let animId;
+    let frameCount = 0;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -22,6 +23,12 @@ const MatrixRain = () => {
     };
 
     const draw = () => {
+      frameCount++;
+      if (frameCount % 2 !== 0) {
+        animId = requestAnimationFrame(draw);
+        return;
+      }
+
       ctx.fillStyle = "rgba(10, 10, 15, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "#00f0ff";

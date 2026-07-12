@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaDownload, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 import {
@@ -14,6 +14,12 @@ import { fetchGitHubRepos, getCachedRepos } from "../utils/githubRepos";
 import { updateSeo } from "../utils/seo";
 import TerminalHero from "../components/TerminalHero";
 import GlitchText from "../components/GlitchText";
+import OrbitalRing from "../components/OrbitalRing";
+
+const SkillRadar = lazy(() => import("../components/SkillRadar"));
+const LanguageChart = lazy(() => import("../components/LanguageChart"));
+const SolarSystem = lazy(() => import("../components/SolarSystem"));
+const SolarSystemMobile = lazy(() => import("../components/SolarSystemMobile"));
 
 const skillGroups = [
   {
@@ -156,6 +162,7 @@ const Home = () => {
   const [repos, setRepos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const username = "Nsarkar-XLR8";
   const { scrollYProgress, scrollY } = useScroll();
@@ -167,12 +174,28 @@ const Home = () => {
   const portraitY = useTransform(scrollY, [0, 520], [0, -64]);
 
   useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
     updateSeo({
       title: "Nayem Sarkar | Software Engineer & Backend Architect",
       description:
         "Official portfolio of Nayem Sarkar, Software Engineer and Backend Architect specializing in Java, Spring Boot, NestJS, microservices, secure APIs, and optimized data systems.",
+      keywords:
+        "Nayem Sarkar, nayem sarkar, Software Engineer Bangladesh, Backend Architect Dhaka, Java developer, Spring Boot engineer, NestJS developer, portfolio",
       path: "/",
     });
+
+    const preloadSolar = () => import("../components/SolarSystem");
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(preloadSolar, { timeout: 5000 });
+    } else {
+      setTimeout(preloadSolar, 2000);
+    }
   }, []);
 
   useEffect(() => {
@@ -296,10 +319,11 @@ const Home = () => {
           initial={{ opacity: 0, y: 34, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="hero-panel motion-float-slow rounded-3xl p-4 sm:p-5"
+          className="hero-panel motion-float-slow rounded-3xl p-4 sm:p-5 relative"
           whileHover={{ y: -10, rotate: 0.35 }}
           whileTap={{ scale: 0.99 }}
         >
+          <OrbitalRing />
           <div className="image-frame overflow-hidden rounded-2xl">
             <motion.img
               whileHover={{ scale: 1.035 }}
@@ -377,6 +401,58 @@ const Home = () => {
               </div>
             </motion.article>
           ))}
+        </div>
+      </motion.section>
+
+      <motion.section
+        className="section-wrap py-20"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={staggerGroup}
+      >
+        <motion.div variants={sectionReveal} className="mb-10 text-center">
+          <span className="section-kicker">Solar system</span>
+          <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">
+            My backend stack in orbit
+          </h2>
+          <p className="lead-copy mx-auto mt-4 max-w-2xl">
+            Each planet represents a core technology in my engineering toolkit.
+          </p>
+        </motion.div>
+
+        {isMobile ? (
+          <Suspense fallback={<div className="solar-system-container"><div className="solar-system-loading"><div className="orbit-spinner" style={{position:"relative"}} /><span>Initializing orbital view...</span></div></div>}>
+            <SolarSystemMobile />
+          </Suspense>
+        ) : (
+          <Suspense fallback={<div className="solar-system-container"><div className="solar-system-loading"><div className="orbit-spinner" style={{position:"relative"}} /><span>Loading 3D scene...</span></div></div>}>
+            <SolarSystem />
+          </Suspense>
+        )}
+      </motion.section>
+
+      <motion.section
+        className="section-wrap py-20"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={staggerGroup}
+      >
+        <motion.div variants={sectionReveal} className="mb-10 text-center">
+          <span className="section-kicker">Analytics</span>
+          <h2 className="mt-4 text-3xl font-black text-main md:text-5xl">
+            Skills and language breakdown
+          </h2>
+        </motion.div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <Suspense fallback={<div className="surface-card rounded-xl p-6 h-[380px]" />}>
+            <SkillRadar />
+          </Suspense>
+          <Suspense fallback={<div className="surface-card rounded-xl p-6 h-[380px]" />}>
+            <LanguageChart />
+          </Suspense>
         </div>
       </motion.section>
 

@@ -56,9 +56,11 @@ const Contact = () => {
 
   useEffect(() => {
     updateSeo({
-      title: "Contact Nayem Sarkar | Backend Engineer",
+      title: "Contact Nayem Sarkar | Software Engineer & Backend Architect",
       description:
         "Contact Nayem Sarkar for backend engineering, Java Spring Boot, NestJS, microservices, secure APIs, and data architecture opportunities.",
+      keywords:
+        "contact Nayem Sarkar, hire Nayem Sarkar, Software Engineer Dhaka, backend developer contact, Spring Boot developer hire, NestJS engineer for hire",
       path: "/contact",
     });
   }, []);

@@ -59,9 +59,11 @@ const itemVariants = {
 const Service = () => {
   useEffect(() => {
     updateSeo({
-      title: "Backend Services | Nayem Sarkar",
+      title: "Backend Services by Nayem Sarkar | Spring Boot, NestJS, APIs",
       description:
         "Backend engineering services by Nayem Sarkar: Java Spring Boot development, NestJS architecture, microservices, secure APIs, persistence optimization, and integrations.",
+      keywords:
+        "Nayem Sarkar services, backend development services, Spring Boot development, NestJS services, API architect, microservices consulting, Java backend services",
       path: "/services",
     });
   }, []);

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FaEnvelope, FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaEnvelope, FaFacebook, FaGithub, FaLinkedin, FaArrowUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const navLinks = [
@@ -32,6 +32,10 @@ const itemVariants = {
 };
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <motion.footer
       className="footer-surface relative overflow-hidden text-main"
@@ -69,23 +73,12 @@ const Footer = () => {
           </motion.div>
 
           <motion.div variants={itemVariants} className="flex flex-col justify-between gap-6">
-            <nav className="flex flex-wrap gap-3 md:justify-end">
+            <nav aria-label="Footer navigation" className="flex flex-wrap gap-3 md:justify-end">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.to}
-                  className="rounded-full px-4 py-2 text-sm font-semibold text-muted transition"
-                  style={{ border: "1px solid var(--color-border)" }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(0,240,255,0.4)";
-                    e.currentTarget.style.color = "var(--color-accent)";
-                    e.currentTarget.style.boxShadow = "0 0 0.5em rgba(0,240,255,0.1)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "var(--color-border)";
-                    e.currentTarget.style.color = "";
-                    e.currentTarget.style.boxShadow = "";
-                  }}
+                  className="footer-nav-link rounded-full px-4 py-2 text-sm font-semibold text-muted"
                 >
                   {link.name}
                 </Link>
@@ -125,7 +118,16 @@ const Footer = () => {
           style={{ borderColor: "var(--color-border)" }}
         >
           <span>&copy; {new Date().getFullYear()} Nayem Sarkar. All rights reserved.</span>
-          <span>Dhaka, Bangladesh</span>
+          <div className="flex items-center gap-4">
+            <span>Dhaka, Bangladesh</span>
+            <button
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-1 text-[var(--color-accent)] transition-colors hover:underline"
+              aria-label="Back to top"
+            >
+              <FaArrowUp aria-hidden="true" /> Top
+            </button>
+          </div>
         </motion.div>
       </div>
     </motion.footer>

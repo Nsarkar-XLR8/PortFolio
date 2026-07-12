@@ -2,7 +2,6 @@ import { useEffect, useState, useRef, useCallback, Suspense, lazy } from "react"
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaDownload, FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
 import {
-  AnimatePresence,
   motion,
   useScroll,
   useTransform,
@@ -20,6 +19,8 @@ const SkillRadar = lazy(() => import("../components/SkillRadar"));
 const LanguageChart = lazy(() => import("../components/LanguageChart"));
 const SolarSystem = lazy(() => import("../components/SolarSystem"));
 const SolarSystemMobile = lazy(() => import("../components/SolarSystemMobile"));
+
+const GITHUB_USERNAME = "Nsarkar-XLR8";
 
 const skillGroups = [
   {
@@ -164,13 +165,7 @@ const Home = () => {
   const [isError, setIsError] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const username = "Nsarkar-XLR8";
-  const { scrollYProgress, scrollY } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
+  const { scrollY } = useScroll();
   const portraitY = useTransform(scrollY, [0, 520], [0, -64]);
 
   useEffect(() => {
@@ -211,7 +206,7 @@ const Home = () => {
       if (!cachedRepos) setIsLoading(true);
       setIsError(false);
       try {
-        const freshRepos = await fetchGitHubRepos(username, controller.signal);
+        const freshRepos = await fetchGitHubRepos(GITHUB_USERNAME, controller.signal);
         setRepos(freshRepos.slice(0, 3));
       } catch (err) {
         if (err.name !== "AbortError") {
@@ -225,7 +220,7 @@ const Home = () => {
 
     fetchRepos();
     return () => controller.abort();
-  }, [username]);
+  }, []);
 
   return (
     <div className="page-shell min-h-screen w-full">
@@ -330,6 +325,9 @@ const Home = () => {
               transition={{ type: "spring", stiffness: 180, damping: 18 }}
               src="/Nayem.jpeg"
               alt="Nayem Sarkar"
+              width="400"
+              height="500"
+              loading="eager"
               className="aspect-[4/5] w-full object-cover"
             />
           </div>

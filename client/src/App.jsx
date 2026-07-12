@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Layout from './pages/Layout.jsx';
 import Home from './pages/Home.jsx';
@@ -14,16 +15,12 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> }, 
-      
+      { index: true, element: <Home /> },
       { path: 'about', element: <About /> },
       { path: 'contact', element: <Contact /> },
       { path: 'service', element: <Service /> },
       { path: 'services', element: <Service /> },
-      {
-        path: 'projects',
-        element: <Projects />
-      },
+      { path: 'projects', element: <Projects /> },
       {
         path: '*',
         element: (
@@ -32,6 +29,9 @@ const router = createBrowserRouter([
               <p className="section-kicker justify-center">404</p>
               <h1 className="mt-5 text-4xl font-black text-main">Page not found</h1>
               <p className="mt-4 text-muted">The page you are looking for does not exist.</p>
+              <Link to="/" className="btn-primary mt-6 inline-flex rounded-lg px-6 py-3 font-bold">
+                Back to Home
+              </Link>
             </div>
           </div>
         )

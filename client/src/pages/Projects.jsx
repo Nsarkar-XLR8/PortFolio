@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FaArrowRight, FaCodeBranch, FaExclamationCircle, FaGithub, FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { fetchGitHubRepos, getCachedRepos } from "../utils/githubRepos";
 import { updateSeo } from "../utils/seo";
+
+const GITHUB_USERNAME = "Nsarkar-XLR8";
 
 const formatName = (name) =>
   name
@@ -47,7 +49,22 @@ const Projects = () => {
   const [repos, setRepos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const username = "Nsarkar-XLR8";
+
+  const fetchProjects = useCallback(async (signal) => {
+    setIsError(false);
+    setIsLoading(true);
+    try {
+      const freshRepos = await fetchGitHubRepos(GITHUB_USERNAME, signal);
+      setRepos(freshRepos);
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        console.error("Failed to fetch repositories:", err);
+        setIsError(true);
+      }
+    } finally {
+      if (!signal.aborted) setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     updateSeo({
@@ -58,34 +75,17 @@ const Projects = () => {
         "Nayem Sarkar projects, Nayem Sarkar GitHub, Java projects, Spring Boot projects, NestJS projects, backend developer portfolio, microservices projects",
       path: "/projects",
     });
+
     const cachedRepos = getCachedRepos();
     if (cachedRepos) {
       setRepos(cachedRepos);
       setIsLoading(false);
-    } else {
-      setIsLoading(true);
     }
-    setIsError(false);
 
     const controller = new AbortController();
-
-    const fetchProjects = async () => {
-      try {
-        const freshRepos = await fetchGitHubRepos(username, controller.signal);
-        setRepos(freshRepos);
-      } catch (err) {
-        if (err.name !== "AbortError") {
-          console.error("Failed to fetch repositories:", err);
-          setIsError(true);
-        }
-      } finally {
-        if (!controller.signal.aborted) setIsLoading(false);
-      }
-    };
-
-    fetchProjects();
+    fetchProjects(controller.signal);
     return () => controller.abort();
-  }, [username]);
+  }, [fetchProjects]);
 
   return (
     <div className="page-shell min-h-screen w-full px-4 py-28 md:px-8">
@@ -120,6 +120,15 @@ const Projects = () => {
               Failed to load projects from GitHub.
             </p>
             <p className="mt-3 text-muted">Please check the network or GitHub API rate limits.</p>
+            <button
+              onClick={() => {
+                const controller = new AbortController();
+                fetchProjects(controller.signal);
+              }}
+              className="btn-primary mt-6 rounded-lg px-6 py-3 font-bold"
+            >
+              Retry
+            </button>
           </div>
         ) : repos.length > 0 ? (
           repos.map((repo) => (

@@ -28,7 +28,6 @@ const TerminalHero = () => {
         setDisplayText(currentRole.slice(0, displayText.length + 1));
         return TYPING_SPEED + Math.random() * 40 - 20;
       }
-      setIsDeleting(false);
       return PAUSE_AFTER_TYPE;
     }
 
@@ -55,7 +54,7 @@ const TerminalHero = () => {
   }, [displayText, isDeleting, currentRole, tick]);
 
   return (
-    <div className="terminal-window">
+    <div className="terminal-window" role="img" aria-label={`Current role: ${displayText || currentRole}`}>
       <div className="terminal-bar">
         <span className="terminal-dot bg-[#ff5f57]" />
         <span className="terminal-dot bg-[#febc2e]" />
@@ -67,6 +66,9 @@ const TerminalHero = () => {
         <span className="terminal-text">{displayText}</span>
         <span className="terminal-cursor" />
       </div>
+      <span className="sr-only" aria-live="polite">
+        {displayText || currentRole}
+      </span>
     </div>
   );
 };

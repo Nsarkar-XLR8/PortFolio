@@ -1,9 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const menuItems = [
     { label: "Home", to: "/" },
@@ -39,6 +41,42 @@ const Navbar = () => {
     visible: { opacity: 1, y: 0 },
   };
 
+  useEffect(() => {
+    if (!open) return;
+
+    const handleEscape = (e) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target) && !buttonRef.current?.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   return (
     <motion.header
       className="fixed w-full top-0 z-50 nav-surface text-main"
@@ -66,6 +104,7 @@ const Navbar = () => {
         </motion.div>
 
         <nav
+          aria-label="Desktop navigation"
           className="hidden items-center rounded-full px-2 py-2 md:flex"
           style={{
             border: "1px solid rgba(0, 240, 255, 0.1)",
@@ -95,13 +134,21 @@ const Navbar = () => {
         </nav>
 
         <div className="md:hidden">
-          <button onClick={() => setOpen(!open)} className="focus:outline-none z-50 relative">
+          <button
+            ref={buttonRef}
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={open}
+            aria-controls="mobile-nav-menu"
+            className="z-50 relative focus:outline-none"
+          >
             <svg
               className="w-6 h-6 text-main"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
               <motion.path
                 strokeLinecap="round"
@@ -117,36 +164,41 @@ const Navbar = () => {
 
       <AnimatePresence>
         {open && (
-          <motion.nav
-            className="md:hidden nav-surface px-4 pb-4 flex flex-col space-y-3 absolute w-full"
-            variants={mobileMenuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            {menuItems.map((item) => (
-              <motion.div key={item.label} variants={mobileMenuItemVariants}>
-                <NavLink
-                  to={item.to}
-                  className={({ isActive }) =>
-                    `block rounded-lg px-3 py-2 font-medium transition-colors duration-300 ${
+          <div className="mobile-menu-backdrop md:hidden" aria-hidden="true">
+            <motion.nav
+              ref={menuRef}
+              id="mobile-nav-menu"
+              aria-label="Mobile navigation"
+              className="nav-surface px-4 pb-4 flex flex-col space-y-3 absolute w-full"
+              variants={mobileMenuVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {menuItems.map((item) => (
+                <motion.div key={item.label} variants={mobileMenuItemVariants}>
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `block rounded-lg px-3 py-2 font-medium transition-colors duration-300 ${
+                        isActive
+                          ? "text-[var(--color-accent)]"
+                          : "text-muted hover:text-[var(--color-accent)]"
+                      }`
+                    }
+                    style={({ isActive }) =>
                       isActive
-                        ? "text-[var(--color-accent)]"
-                        : "text-muted hover:text-[var(--color-accent)]"
-                    }`
-                  }
-                  style={({ isActive }) =>
-                    isActive
-                      ? { background: "rgba(0, 240, 255, 0.08)", textShadow: "0 0 0.5em rgba(0, 240, 255, 0.3)" }
-                      : {}
-                  }
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </NavLink>
-              </motion.div>
-            ))}
-          </motion.nav>
+                        ? { background: "rgba(0, 240, 255, 0.08)", textShadow: "0 0 0.5em rgba(0, 240, 255, 0.3)" }
+                        : {}
+                    }
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </NavLink>
+                </motion.div>
+              ))}
+            </motion.nav>
+          </div>
         )}
       </AnimatePresence>
     </motion.header>

@@ -20,7 +20,10 @@
   --neon-cyan: #00f0ff;
   --neon-magenta: #ff00aa;
   --neon-green: #00ff88;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: var(--font-body);
 }
 
 html {
@@ -40,6 +43,25 @@ body {
   overflow-x: hidden;
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.display-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+h4,
+h5,
+h6,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-body);
 }
 
 a {
@@ -87,7 +109,7 @@ a {
   align-items: center;
   gap: 0.5rem;
   color: var(--color-accent);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -105,11 +127,9 @@ a {
 
 .display-title {
   color: var(--color-text);
-  font-family: "JetBrains Mono", Inter, sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 0.96;
-  text-shadow: 0 0 0.4em rgba(0, 240, 255, 0.3), 0 0 1.2em rgba(0, 240, 255, 0.1);
+  font-weight: 600;
+  line-height: 0.94;
+  text-shadow: 0 0 0.35em rgba(0, 240, 255, 0.22), 0 0 1.1em rgba(0, 240, 255, 0.08);
 }
 
 .lead-copy {
@@ -462,7 +482,7 @@ a {
 
 .terminal-title {
   margin-left: 0.5rem;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   color: var(--color-text-muted);
   letter-spacing: 0.02em;
@@ -470,7 +490,7 @@ a {
 
 .terminal-body {
   padding: 1rem 1.2rem;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 1.05rem;
   font-weight: 600;
   min-height: 2.8rem;
@@ -735,6 +755,103 @@ a {
   justify-content: center;
 }
 
+.solar-system-scene {
+  position: relative;
+  width: min(100%, 42rem);
+  height: 100%;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+.solar-system-scene::before {
+  content: "";
+  position: absolute;
+  width: 11rem;
+  height: 11rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.18), rgba(0, 240, 255, 0.035) 58%, transparent 72%);
+  filter: blur(4px);
+}
+
+.solar-system-core {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 6.25rem;
+  height: 6.25rem;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.2), rgba(0, 240, 255, 0.14) 34%, rgba(10, 10, 15, 0.94) 72%);
+  color: var(--color-text);
+  box-shadow: 0 0 2.2rem rgba(0, 240, 255, 0.18), inset 0 0 1.2rem rgba(0, 240, 255, 0.14);
+  text-align: center;
+}
+
+.solar-system-core span,
+.solar-system-core strong {
+  display: block;
+  font-family: var(--font-mono);
+  line-height: 1.1;
+}
+
+.solar-system-core span {
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.solar-system-core strong {
+  color: var(--color-accent);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.solar-system-orbit {
+  position: absolute;
+  width: calc(var(--orbit-size) * 2);
+  height: calc(var(--orbit-size) * 0.78);
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  border-radius: 50%;
+}
+
+.solar-system-orbit:nth-of-type(even) {
+  border-color: rgba(255, 0, 170, 0.1);
+}
+
+.solar-system-planet {
+  position: absolute;
+  left: calc(50% + var(--planet-x));
+  top: calc(50% + var(--planet-y));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transform: translate(-50%, -50%);
+  animation: solar-planet-float 5.6s ease-in-out infinite;
+  animation-delay: var(--planet-delay);
+  z-index: 4;
+}
+
+.solar-system-planet-dot {
+  width: var(--planet-size);
+  height: var(--planet-size);
+  border-radius: 50%;
+  background: var(--planet-color);
+  box-shadow: 0 0 0.9rem color-mix(in srgb, var(--planet-color) 68%, transparent);
+}
+
+.solar-system-planet-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--planet-color);
+  text-shadow: 0 0 0.5rem color-mix(in srgb, var(--planet-color) 45%, transparent);
+  white-space: nowrap;
+}
+
 .solar-system-loading {
   display: flex;
   flex-direction: column;
@@ -768,8 +885,17 @@ a {
   to { transform: rotate(360deg); }
 }
 
+@keyframes solar-planet-float {
+  0%, 100% {
+    margin-top: 0;
+  }
+  50% {
+    margin-top: -0.55rem;
+  }
+}
+
 .solar-system-loading span {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--color-text-muted);
   letter-spacing: 0.05em;
@@ -778,6 +904,10 @@ a {
 @media (max-width: 767px) {
   .solar-system-container {
     height: 320px;
+  }
+
+  .solar-system-scene {
+    transform: scale(0.78);
   }
 }
 
@@ -819,7 +949,7 @@ a {
 }
 
 .solar-system-mobile-label {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -845,7 +975,7 @@ a {
 
 .recharts-tooltip-label {
   color: var(--color-accent) !important;
-  font-family: "JetBrains Mono", monospace !important;
+  font-family: var(--font-mono) !important;
 }
 
 /* ─── Screen Reader Only ─── */
@@ -987,7 +1117,7 @@ a:focus-visible {
   border: 2px solid rgba(0, 240, 255, 0.5);
   background: rgba(0, 240, 255, 0.06);
   color: var(--color-accent);
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 0.05em;
@@ -1013,7 +1143,7 @@ a:focus-visible {
 }
 
 .loading-screen-text {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--color-text-muted);
   letter-spacing: 0.08em;

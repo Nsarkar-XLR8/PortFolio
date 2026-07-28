@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 
 const CURSOR_SELECTORS = "a, button, .btn-primary, .btn-secondary, .skill-pill, input, textarea";

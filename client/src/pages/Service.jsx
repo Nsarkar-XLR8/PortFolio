@@ -121,7 +121,7 @@ const Service = () => {
                 className="text-sm font-black"
                 style={{
                   color: "var(--neon-cyan)",
-                  fontFamily: "JetBrains Mono, monospace",
+                  fontFamily: "var(--font-mono)",
                   textShadow: "0 0 0.5em rgba(0,240,255,0.4)",
                 }}
               >
@@ -180,7 +180,7 @@ const Service = () => {
                   style={{
                     background: "rgba(0,240,255,0.1)",
                     color: "var(--neon-cyan)",
-                    fontFamily: "JetBrains Mono, monospace",
+                    fontFamily: "var(--font-mono)",
                     boxShadow: "0 0 0.5em rgba(0,240,255,0.15)",
                   }}
                 >

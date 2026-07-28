@@ -29,7 +29,7 @@ const CustomTooltip = ({ active, payload }) => {
           border: "1px solid rgba(0,240,255,0.3)",
           borderRadius: "0.5rem",
           padding: "0.5rem 0.8rem",
-          fontFamily: "JetBrains Mono, monospace",
+          fontFamily: "var(--font-mono)",
           fontSize: "0.75rem",
         }}
       >
@@ -56,7 +56,7 @@ const SkillRadar = () => {
     >
       <h3
         className="mb-4 text-center text-sm font-bold uppercase tracking-[0.16em]"
-        style={{ color: "var(--neon-cyan)", fontFamily: "JetBrains Mono, monospace" }}
+        style={{ color: "var(--neon-cyan)", fontFamily: "var(--font-mono)" }}
       >
         Skill Proficiency
       </h3>
@@ -65,7 +65,7 @@ const SkillRadar = () => {
           <PolarGrid stroke="rgba(0,240,255,0.12)" />
           <PolarAngleAxis
             dataKey="skill"
-            tick={{ fill: "var(--color-text-muted)", fontSize: 11, fontFamily: "JetBrains Mono, monospace" }}
+            tick={{ fill: "var(--color-text-muted)", fontSize: 11, fontFamily: "var(--font-mono)" }}
           />
           <PolarRadiusAxis
             angle={90}

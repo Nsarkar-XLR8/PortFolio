@@ -211,7 +211,7 @@ const Contact = () => {
                   <span>
                     <span
                       className="block text-sm font-bold uppercase tracking-[0.16em]"
-                      style={{ color: "var(--color-accent)", fontFamily: "JetBrains Mono, monospace" }}
+                      style={{ color: "var(--color-accent)", fontFamily: "var(--font-mono)" }}
                     >
                       {item.label}
                     </span>

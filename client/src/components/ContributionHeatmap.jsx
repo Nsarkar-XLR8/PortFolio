@@ -64,13 +64,13 @@ const ContributionHeatmap = () => {
       <div className="flex items-center justify-between mb-4">
         <h3
           className="text-sm font-bold uppercase tracking-[0.16em]"
-          style={{ color: "var(--neon-cyan)", fontFamily: "JetBrains Mono, monospace" }}
+          style={{ color: "var(--neon-cyan)", fontFamily: "var(--font-mono)" }}
         >
           Contributions
         </h3>
         <span
           className="text-xs"
-          style={{ color: "var(--color-text-muted)", fontFamily: "JetBrains Mono, monospace" }}
+          style={{ color: "var(--color-text-muted)", fontFamily: "var(--font-mono)" }}
         >
           {total} contributions in the last year
         </span>
@@ -91,7 +91,7 @@ const ContributionHeatmap = () => {
               textAnchor="end"
               fill="var(--color-text-muted)"
               fontSize={10}
-              fontFamily="JetBrains Mono, monospace"
+              fontFamily="var(--font-mono)"
             >
               {label}
             </text>
@@ -126,7 +126,7 @@ const ContributionHeatmap = () => {
       <div className="mt-3 flex items-center justify-end gap-2">
         <span
           className="text-[10px]"
-          style={{ color: "var(--color-text-muted)", fontFamily: "JetBrains Mono, monospace" }}
+          style={{ color: "var(--color-text-muted)", fontFamily: "var(--font-mono)" }}
         >
           Less
         </span>
@@ -139,7 +139,7 @@ const ContributionHeatmap = () => {
         ))}
         <span
           className="text-[10px]"
-          style={{ color: "var(--color-text-muted)", fontFamily: "JetBrains Mono, monospace" }}
+          style={{ color: "var(--color-text-muted)", fontFamily: "var(--font-mono)" }}
         >
           More
         </span>

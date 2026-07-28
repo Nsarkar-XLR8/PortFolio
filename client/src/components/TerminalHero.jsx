@@ -39,7 +39,7 @@ const TerminalHero = () => {
     setIsDeleting(false);
     setRoleIndex((prev) => (prev + 1) % roles.length);
     return PAUSE_AFTER_DELETE;
-  }, [displayText, isDeleting, currentRole, roleIndex]);
+  }, [displayText, isDeleting, currentRole]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

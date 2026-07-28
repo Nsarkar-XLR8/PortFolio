@@ -94,7 +94,7 @@ const Navbar = () => {
                 background: "rgba(0, 240, 255, 0.06)",
                 color: "var(--color-accent)",
                 boxShadow: "0 0 0.8em rgba(0, 240, 255, 0.15)",
-                fontFamily: "JetBrains Mono, monospace",
+                fontFamily: "var(--font-mono)",
               }}
             >
               NS

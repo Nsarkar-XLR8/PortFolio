@@ -108,7 +108,7 @@ const ProjectCard = ({ repo, index }) => {
         <div className="mb-6 flex items-center justify-between gap-4">
           <span
             className="text-xs font-bold uppercase tracking-[0.2em]"
-            style={{ fontFamily: "JetBrains Mono, monospace", color: "var(--color-accent)" }}
+            style={{ fontFamily: "var(--font-mono)", color: "var(--color-accent)" }}
           >
             Featured
           </span>
@@ -123,7 +123,7 @@ const ProjectCard = ({ repo, index }) => {
         </p>
 
         <div className="mt-auto flex items-center justify-between border-t border-accent-soft pt-5">
-          <span className="text-sm" style={{ color: "var(--neon-cyan)", fontFamily: "JetBrains Mono, monospace" }}>
+          <span className="text-sm" style={{ color: "var(--neon-cyan)", fontFamily: "var(--font-mono)" }}>
             {repo.language || "Code"}
           </span>
           <a
@@ -185,12 +185,6 @@ const Home = () => {
       path: "/",
     });
 
-    const preloadSolar = () => import("../components/SolarSystem");
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(preloadSolar, { timeout: 5000 });
-    } else {
-      setTimeout(preloadSolar, 2000);
-    }
   }, []);
 
   useEffect(() => {
@@ -347,7 +341,7 @@ const Home = () => {
                   style={{
                     color: "var(--color-accent)",
                     textShadow: "0 0 0.5em rgba(0, 240, 255, 0.4)",
-                    fontFamily: "JetBrains Mono, monospace",
+                    fontFamily: "var(--font-mono)",
                   }}
                 >
                   {stat.value}
@@ -386,7 +380,7 @@ const Home = () => {
             >
               <h3
                 className="mb-5 text-xl font-bold text-main"
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
+                style={{ fontFamily: "var(--font-mono)" }}
               >
                 {group.title}
               </h3>

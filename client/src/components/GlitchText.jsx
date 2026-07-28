@@ -1,8 +1,8 @@
-const GlitchText = ({ children, as: Tag = "span", className = "" }) => {
+const GlitchText = ({ children, className = "" }) => {
   return (
-    <Tag className={`glitch-text ${className}`} data-text={children}>
+    <span className={`glitch-text ${className}`} data-text={children}>
       {children}
-    </Tag>
+    </span>
   );
 };
 

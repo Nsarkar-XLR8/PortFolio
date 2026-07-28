@@ -129,7 +129,7 @@ export const fetchGitHubRepos = async (username, signal) => {
 
     writeCache(repos);
     return repos;
-  } catch (error) {
+  } catch {
     if (cachedRepos) return cachedRepos;
     writeCache(FALLBACK_REPOS);
     return FALLBACK_REPOS;

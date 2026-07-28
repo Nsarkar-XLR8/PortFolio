@@ -147,7 +147,7 @@ const Projects = () => {
                   style={{
                     border: "1px solid rgba(0,240,255,0.25)",
                     color: "var(--neon-cyan)",
-                    fontFamily: "JetBrains Mono, monospace",
+                    fontFamily: "var(--font-mono)",
                   }}
                 >
                   {repo.language || "Code"}

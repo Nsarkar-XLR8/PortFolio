@@ -171,7 +171,7 @@ const About = () => {
             >
               <h3
                 className="text-xl font-bold text-main"
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
+                style={{ fontFamily: "var(--font-mono)" }}
               >
                 {item.title}
               </h3>
@@ -250,7 +250,7 @@ const About = () => {
                     style={{
                       border: "1px solid rgba(0,240,255,0.25)",
                       color: "var(--color-accent)",
-                      fontFamily: "JetBrains Mono, monospace",
+                      fontFamily: "var(--font-mono)",
                     }}
                   >
                     {exp.type}

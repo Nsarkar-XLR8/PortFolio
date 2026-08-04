@@ -7,6 +7,8 @@ import {
   FaStar,
   FaExternalLinkAlt,
   FaPlay,
+  FaCode,
+  FaTerminal,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import {
@@ -14,7 +16,7 @@ import {
   getCachedRepos,
   getLiveUrl,
   getPlatformBadge,
-  getProjectImage,
+  getLanguageConfig,
 } from "../utils/githubRepos";
 import { updateSeo } from "../utils/seo";
 import LivePreviewModal from "../components/LivePreviewModal";
@@ -30,12 +32,12 @@ const formatName = (name) =>
 
 const SkeletonCard = ({ index }) => (
   <motion.div
-    className="surface-card rounded-xl p-6 overflow-hidden"
+    className="surface-card rounded-2xl p-6 overflow-hidden"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.05 }}
   >
-    <div className="mb-4 h-40 w-full rounded-lg skeleton-line" />
+    <div className="mb-4 h-40 w-full rounded-xl skeleton-line" />
     <div className="mb-4 h-4 w-24 rounded skeleton-line" />
     <div className="mb-3 h-7 w-3/4 rounded skeleton-line" />
     <div className="mb-2 h-4 w-full rounded skeleton-line" />
@@ -87,7 +89,7 @@ const Projects = () => {
     updateSeo({
       title: "Projects by Nayem Sarkar | Java, Spring Boot, NestJS",
       description:
-        "Explore backend engineering and full-stack projects by Nayem Sarkar with interactive live previews, GitHub source code, microservices architecture, and live applications.",
+        "Explore backend engineering and full-stack projects by Nayem Sarkar with live deployments on Vercel & Render, GitHub source code, and microservices architecture.",
       keywords:
         "Nayem Sarkar projects, Nayem Sarkar GitHub, Java projects, Spring Boot projects, NestJS projects, backend developer portfolio, live web previews, microservices projects",
       path: "/projects",
@@ -119,7 +121,7 @@ const Projects = () => {
           Projects that show how I think and build.
         </motion.h1>
         <motion.p className="lead-copy mx-auto mt-6 max-w-3xl text-lg md:text-xl" variants={itemVariants}>
-          Interactive live previews and source code from GitHub repositories, live on Vercel, Render, and GitHub Pages.
+          Source code repositories and live applications deployed on Vercel, Render, and GitHub Pages.
         </motion.p>
       </motion.section>
 
@@ -151,40 +153,39 @@ const Projects = () => {
           repos.map((repo) => {
             const liveUrl = getLiveUrl(repo);
             const platform = getPlatformBadge(liveUrl);
-            const previewImageUrl = getProjectImage(repo);
+            const langConfig = getLanguageConfig(repo.language);
 
             return (
               <motion.article
                 layout
                 key={repo.id}
-                className="group surface-card motion-rise flex min-h-[420px] flex-col overflow-hidden rounded-2xl p-0 transition-all duration-300"
+                className="group surface-card motion-rise flex min-h-[400px] flex-col overflow-hidden rounded-2xl p-0 transition-all duration-300 border border-[var(--color-accent-soft)] hover:border-[var(--color-accent)]/40 shadow-lg"
                 variants={itemVariants}
                 whileHover={{ y: -8, scale: 1.015 }}
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
               >
-                {/* Project Visual Header / Screenshot Banner */}
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#0d1117] border-b border-accent-soft">
-                  <img
-                    src={previewImageUrl}
-                    alt={`${repo.name} preview`}
-                    loading="lazy"
-                    className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) => {
-                      // Fallback to GitHub social preview card if live screenshot fails
-                      e.target.src = `https://opengraph.githubassets.com/1/Nsarkar-XLR8/${repo.name}`;
+                {/* Project Visual Tech Header Banner */}
+                <div className={`relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br ${langConfig.gradient} p-5 flex flex-col justify-between border-b border-accent-soft`}>
+                  {/* Background Grid Pattern & Watermark */}
+                  <div
+                    className="absolute inset-0 opacity-15 pointer-events-none"
+                    style={{
+                      backgroundImage: "radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px)",
+                      backgroundSize: "16px 16px",
                     }}
                   />
-                  {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent to-black/40 opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
+                  <span className="absolute -bottom-4 -right-2 text-7xl font-black font-mono tracking-tighter opacity-10 text-white select-none uppercase pointer-events-none">
+                    {repo.language || "CODE"}
+                  </span>
 
                   {/* Top Badges */}
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
+                  <div className="relative z-10 flex items-center justify-between">
                     <span
                       className="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur-md"
                       style={{
-                        backgroundColor: "rgba(10, 10, 15, 0.75)",
-                        border: "1px solid rgba(0, 240, 255, 0.3)",
-                        color: "var(--neon-cyan)",
+                        backgroundColor: langConfig.badgeBg,
+                        border: `1px solid ${langConfig.border}`,
+                        color: langConfig.accent,
                         fontFamily: "var(--font-mono)",
                       }}
                     >
@@ -193,7 +194,7 @@ const Projects = () => {
 
                     {platform && (
                       <span
-                        className="rounded-full px-2.5 py-0.5 text-xs font-bold flex items-center gap-1 backdrop-blur-md shadow-lg"
+                        className="rounded-full px-2.5 py-0.5 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md shadow-lg"
                         style={{
                           backgroundColor: platform.bg,
                           color: platform.color,
@@ -206,20 +207,31 @@ const Projects = () => {
                     )}
                   </div>
 
+                  {/* Banner Title Preview */}
+                  <div className="relative z-10 my-auto pt-2">
+                    <div className="flex items-center gap-2 text-xs font-mono text-[var(--neon-cyan)] mb-1">
+                      <FaTerminal className="text-[10px]" />
+                      <span>nsarkar/{repo.name}</span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug line-clamp-2">
+                      {formatName(repo.name)}
+                    </h3>
+                  </div>
+
                   {/* Quick Action Overlay Buttons on Hover */}
                   {liveUrl && (
-                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/60 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-opacity duration-300 z-20">
+                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/75 opacity-0 group-hover:opacity-100 backdrop-blur-[3px] transition-opacity duration-300 z-20 p-4">
                       <a
                         href={liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn-primary rounded-full px-4 py-2 text-xs font-bold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+                        className="btn-primary rounded-full px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
                       >
                         <FaExternalLinkAlt className="text-[10px]" /> Live Site
                       </a>
                       <button
                         onClick={() => setActivePreviewRepo({ repo, liveUrl })}
-                        className="rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 px-4 py-2 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+                        className="rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
                         title="Open interactive preview modal"
                       >
                         <FaPlay className="text-[10px]" /> Preview
@@ -229,9 +241,9 @@ const Projects = () => {
                 </div>
 
                 {/* Card Content Body */}
-                <div className="flex flex-grow flex-col p-6">
+                <div className="flex flex-grow flex-col p-6 bg-[#0d1117]/80">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-black text-main transition group-hover:text-[var(--color-accent)] truncate">
+                    <h2 className="text-lg font-bold text-main transition group-hover:text-[var(--color-accent)] truncate">
                       {formatName(repo.name)}
                     </h2>
                     <a

@@ -176,12 +176,58 @@ export const getPlatformBadge = (url) => {
 };
 
 export const getProjectImage = (repo) => {
-  const liveUrl = getLiveUrl(repo);
-  if (liveUrl) {
-    // Generate real-time screenshot thumbnail from live site
-    return `https://image.thum.io/get/width/600/crop/800/${liveUrl}`;
-  }
-  // Fallback to GitHub OpenGraph repository social card
+  // Use GitHub's official open-graph preview image for every repository
   return `https://opengraph.githubassets.com/1/Nsarkar-XLR8/${repo.name}`;
 };
+
+export const getLanguageConfig = (language) => {
+  const lang = (language || "").toLowerCase();
+  if (lang.includes("java") && !lang.includes("script")) {
+    return {
+      gradient: "from-amber-950/60 via-red-950/40 to-[#0d1117]",
+      accent: "#f89820",
+      border: "rgba(248, 152, 32, 0.3)",
+      badgeBg: "rgba(248, 152, 32, 0.15)",
+    };
+  }
+  if (lang.includes("javascript") || lang.includes("js")) {
+    return {
+      gradient: "from-yellow-950/60 via-amber-950/40 to-[#0d1117]",
+      accent: "#f7df1e",
+      border: "rgba(247, 223, 30, 0.3)",
+      badgeBg: "rgba(247, 223, 30, 0.15)",
+    };
+  }
+  if (lang.includes("typescript") || lang.includes("ts")) {
+    return {
+      gradient: "from-blue-950/60 via-cyan-950/40 to-[#0d1117]",
+      accent: "#3178c6",
+      border: "rgba(49, 120, 198, 0.3)",
+      badgeBg: "rgba(49, 120, 198, 0.15)",
+    };
+  }
+  if (lang.includes("python")) {
+    return {
+      gradient: "from-blue-950/60 via-emerald-950/40 to-[#0d1117]",
+      accent: "#3776ab",
+      border: "rgba(55, 118, 171, 0.3)",
+      badgeBg: "rgba(55, 118, 171, 0.15)",
+    };
+  }
+  if (lang.includes("html") || lang.includes("css")) {
+    return {
+      gradient: "from-orange-950/60 via-rose-950/40 to-[#0d1117]",
+      accent: "#e34f26",
+      border: "rgba(227, 79, 38, 0.3)",
+      badgeBg: "rgba(227, 79, 38, 0.15)",
+    };
+  }
+  return {
+    gradient: "from-cyan-950/60 via-slate-950/40 to-[#0d1117]",
+    accent: "var(--neon-cyan)",
+    border: "rgba(0, 240, 255, 0.3)",
+    badgeBg: "rgba(0, 240, 255, 0.15)",
+  };
+};
+
 

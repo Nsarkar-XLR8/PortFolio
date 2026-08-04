@@ -1,77 +1,53 @@
-const CACHE_KEY = "nayem-github-repos";
+const CACHE_KEY = "nayem-github-repos-v2";
 const CACHE_TTL = 1000 * 60 * 10;
 const REQUEST_TIMEOUT = 6000;
 
 const FALLBACK_REPOS = [
   {
-    id: 1,
-    name: "microservices-gateway",
-    description: "Spring Cloud Gateway with Eureka service discovery and route configuration for distributed microservices.",
-    language: "Java",
-    html_url: "https://github.com/Nsarkar-XLR8/microservices-gateway",
-    homepage: "",
-    stargazers_count: 2,
-    forks_count: 1,
-    open_issues_count: 0,
-    fork: false,
-  },
-  {
-    id: 2,
-    name: "payment-service",
-    description: "Idempotent payment processing service with Stripe and PayPal integration, webhook validation, and transaction reliability.",
-    language: "Java",
-    html_url: "https://github.com/Nsarkar-XLR8/payment-service",
-    homepage: "",
-    stargazers_count: 3,
-    forks_count: 0,
-    open_issues_count: 1,
-    fork: false,
-  },
-  {
-    id: 3,
-    name: "auth-api",
-    description: "Secure REST API with OAuth2, JWT token management, role-based access control, and session handling.",
-    language: "TypeScript",
-    html_url: "https://github.com/Nsarkar-XLR8/auth-api",
-    homepage: "",
-    stargazers_count: 1,
-    forks_count: 0,
-    open_issues_count: 0,
-    fork: false,
-  },
-  {
-    id: 4,
-    name: "data-access-optimizer",
-    description: "Hibernate query optimization toolkit with second-level caching, N+1 detection, and native SQL CTE support.",
-    language: "Java",
-    html_url: "https://github.com/Nsarkar-XLR8/data-access-optimizer",
-    homepage: "",
-    stargazers_count: 4,
-    forks_count: 2,
-    open_issues_count: 0,
-    fork: false,
-  },
-  {
-    id: 5,
-    name: "portfolio",
-    description: "My personal portfolio built with React, Vite, Tailwind CSS, and framer-motion.",
+    id: 101,
+    name: "FoodieLand",
+    description: "MERN Stack project with food recipes, search, filtering, and API integrations.",
     language: "JavaScript",
-    html_url: "https://github.com/Nsarkar-XLR8/portfolio",
-    homepage: "",
-    stargazers_count: 1,
+    html_url: "https://github.com/Nsarkar-XLR8/FoodieLand",
+    homepage: "https://foodie-land-one.vercel.app/",
+    stargazers_count: 0,
     forks_count: 0,
     open_issues_count: 0,
     fork: false,
   },
   {
-    id: 6,
-    name: "websocket-chat",
-    description: "Real-time chat service using WebSockets with message persistence, typing indicators, and presence tracking.",
-    language: "TypeScript",
-    html_url: "https://github.com/Nsarkar-XLR8/websocket-chat",
+    id: 102,
+    name: "Food App",
+    description: "A recipe food app built with React.js using Spoonacular API.",
+    language: "JavaScript",
+    html_url: "https://github.com/Nsarkar-XLR8/Food-App",
+    homepage: "https://food-app-six-ruby.vercel.app/",
+    stargazers_count: 0,
+    forks_count: 0,
+    open_issues_count: 0,
+    fork: false,
+  },
+  {
+    id: 103,
+    name: "Tic Tac Toe Using JAVA",
+    description: "Interactive Tic Tac Toe game built using Java with clean object-oriented architecture.",
+    language: "Java",
+    html_url: "https://github.com/Nsarkar-XLR8/Tic-Tac-Toe-Using-JAVA",
     homepage: "",
-    stargazers_count: 2,
-    forks_count: 1,
+    stargazers_count: 0,
+    forks_count: 0,
+    open_issues_count: 0,
+    fork: false,
+  },
+  {
+    id: 104,
+    name: "PortFolio",
+    description: "Personal portfolio built with React, Vite, Tailwind CSS, and Framer Motion.",
+    language: "JavaScript",
+    html_url: "https://github.com/Nsarkar-XLR8/PortFolio",
+    homepage: "https://nsarkar-xlr8.github.io/PortFolio/",
+    stargazers_count: 0,
+    forks_count: 0,
     open_issues_count: 0,
     fork: false,
   },
@@ -123,9 +99,7 @@ export const fetchGitHubRepos = async (username, signal) => {
     }
 
     const data = await response.json();
-    const repos = data.filter(
-      (repo) => !repo.fork && repo.name.toLowerCase() !== "portfolio"
-    );
+    const repos = data.filter((repo) => !repo.fork);
 
     writeCache(repos);
     return repos;
@@ -141,11 +115,13 @@ export const fetchGitHubRepos = async (username, signal) => {
 
 // Dictionary for custom live URL overrides (e.g. Vercel, Render, Railway, etc.)
 export const LIVE_URL_MAP = {
+  "FoodieLand": "https://foodie-land-one.vercel.app/",
+  "foodieland": "https://foodie-land-one.vercel.app/",
+  "Food App": "https://food-app-six-ruby.vercel.app/",
+  "food app": "https://food-app-six-ruby.vercel.app/",
+  "Food-App": "https://food-app-six-ruby.vercel.app/",
   "portfolio": "https://nsarkar-xlr8.github.io/PortFolio/",
   "PortFolio": "https://nsarkar-xlr8.github.io/PortFolio/",
-  // Add any Vercel / Render URLs here if not set in GitHub repo settings:
-  // "my-vercel-app": "https://my-vercel-app.vercel.app",
-  // "my-render-service": "https://my-render-service.onrender.com",
 };
 
 export const getLiveUrl = (repo) => {

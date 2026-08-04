@@ -206,14 +206,23 @@ const Projects = () => {
                     )}
                   </div>
 
-                  {/* Quick Action Overlay Button on Hover */}
+                  {/* Quick Action Overlay Buttons on Hover */}
                   {liveUrl && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-opacity duration-300 z-20">
+                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/60 opacity-0 group-hover:opacity-100 backdrop-blur-[2px] transition-opacity duration-300 z-20">
+                      <a
+                        href={liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary rounded-full px-4 py-2 text-xs font-bold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+                      >
+                        <FaExternalLinkAlt className="text-[10px]" /> Live Site
+                      </a>
                       <button
                         onClick={() => setActivePreviewRepo({ repo, liveUrl })}
-                        className="btn-primary rounded-full px-5 py-2.5 text-xs font-bold flex items-center gap-2 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+                        className="rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 px-4 py-2 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+                        title="Open interactive preview modal"
                       >
-                        <FaPlay className="text-[10px]" /> Live Preview
+                        <FaPlay className="text-[10px]" /> Preview
                       </button>
                     </div>
                   )}
@@ -264,13 +273,26 @@ const Projects = () => {
                     </a>
 
                     {liveUrl ? (
-                      <button
-                        onClick={() => setActivePreviewRepo({ repo, liveUrl })}
-                        className="btn-primary rounded-lg px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5 shadow-md"
-                      >
-                        <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>Live Preview</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setActivePreviewRepo({ repo, liveUrl })}
+                          className="rounded-lg p-2 text-xs text-muted hover:bg-white/10 hover:text-white transition"
+                          title="Interactive Frame Preview"
+                        >
+                          <FaPlay className="text-[10px]" />
+                        </button>
+                        <a
+                          href={liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-primary rounded-lg px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5 shadow-md"
+                          title={`Open ${liveUrl} in a new tab`}
+                        >
+                          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                          <span>Live Site</span>
+                          <FaExternalLinkAlt className="text-[10px] ml-0.5" />
+                        </a>
+                      </div>
                     ) : (
                       <span className="text-xs text-muted/60 font-mono">Code Repo</span>
                     )}

@@ -63,6 +63,14 @@ const itemVariants = {
   },
 };
 
+const handleLiveClick = (e, url) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (url) {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+};
+
 const Projects = () => {
   const [repos, setRepos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -225,8 +233,8 @@ const Projects = () => {
                         href={liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="btn-primary rounded-full px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 pointer-events-auto"
+                        onClick={(e) => handleLiveClick(e, liveUrl)}
+                        className="btn-primary rounded-full px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 pointer-events-auto cursor-pointer"
                       >
                         <FaExternalLinkAlt className="text-[10px]" /> Live Site
                       </a>
@@ -235,7 +243,7 @@ const Projects = () => {
                           e.stopPropagation();
                           setActivePreviewRepo({ repo, liveUrl });
                         }}
-                        className="rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 pointer-events-auto"
+                        className="rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 pointer-events-auto cursor-pointer"
                         title="Open interactive preview modal"
                       >
                         <FaPlay className="text-[10px]" /> Preview
@@ -304,8 +312,8 @@ const Projects = () => {
                           href={liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="btn-primary rounded-lg px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5 shadow-md"
+                          onClick={(e) => handleLiveClick(e, liveUrl)}
+                          className="btn-primary rounded-lg px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5 shadow-md cursor-pointer"
                           title={`Open ${liveUrl} in a new tab`}
                         >
                           <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />

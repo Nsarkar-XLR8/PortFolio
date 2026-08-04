@@ -177,21 +177,25 @@ export const fetchGitHubRepos = async (username, signal) => {
 export const LIVE_URL_MAP = {
   "FoodieLand": "https://foodie-land-one.vercel.app/",
   "foodieland": "https://foodie-land-one.vercel.app/",
+  "foodie land": "https://foodie-land-one.vercel.app/",
   "Food App": "https://food-app-six-ruby.vercel.app/",
   "food app": "https://food-app-six-ruby.vercel.app/",
   "Food-App": "https://food-app-six-ruby.vercel.app/",
+  "food-app": "https://food-app-six-ruby.vercel.app/",
   "portfolio": "https://nsarkar-xlr8.github.io/PortFolio/",
   "PortFolio": "https://nsarkar-xlr8.github.io/PortFolio/",
 };
 
 export const getLiveUrl = (repo) => {
+  if (!repo) return null;
   let url = null;
   if (repo.homepage && repo.homepage.trim() !== "") {
     url = repo.homepage.trim();
   } else {
-    const key = repo.name;
-    const lowerKey = repo.name.toLowerCase();
-    url = LIVE_URL_MAP[key] || LIVE_URL_MAP[lowerKey] || null;
+    const key = repo.name || "";
+    const lowerKey = key.toLowerCase();
+    const cleanKey = key.replace(/[-_]/g, " ").toLowerCase();
+    url = LIVE_URL_MAP[key] || LIVE_URL_MAP[lowerKey] || LIVE_URL_MAP[cleanKey] || null;
   }
   if (!url) return null;
   if (!url.startsWith("http://") && !url.startsWith("https://")) {

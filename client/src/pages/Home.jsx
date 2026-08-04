@@ -317,7 +317,7 @@ const Home = () => {
             <motion.img
               whileHover={{ scale: 1.035 }}
               transition={{ type: "spring", stiffness: 180, damping: 18 }}
-              src="/Nayem.jpeg"
+              src={`${import.meta.env.BASE_URL}Nayem.jpeg`}
               alt="Nayem Sarkar"
               width="400"
               height="500"

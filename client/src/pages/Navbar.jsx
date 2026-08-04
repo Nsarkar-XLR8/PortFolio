@@ -88,7 +88,7 @@ const Navbar = () => {
         <motion.div whileHover={{ y: -2, scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link to="/" className="flex items-center gap-3 font-bold text-xl transition-colors duration-300">
             <span
-              className="motion-float grid h-9 w-9 place-items-center rounded-full text-sm font-black"
+              className="motion-float grid h-9 w-9 place-items-center rounded-full text-xs font-black tracking-widest"
               style={{
                 border: "1.5px solid rgba(0, 240, 255, 0.5)",
                 background: "rgba(0, 240, 255, 0.06)",
@@ -99,13 +99,15 @@ const Navbar = () => {
             >
               NS
             </span>
-            <span>Nayem</span>
+            <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.12em", fontWeight: 700 }} className="text-xl uppercase">
+              Nayem
+            </span>
           </Link>
         </motion.div>
 
         <nav
           aria-label="Desktop navigation"
-          className="hidden items-center rounded-full px-2 py-2 md:flex"
+          className="hidden items-center rounded-full px-2 py-1.5 md:flex"
           style={{
             border: "1px solid rgba(0, 240, 255, 0.1)",
             background: "rgba(0, 240, 255, 0.02)",
@@ -116,7 +118,7 @@ const Navbar = () => {
               key={item.label}
               to={item.to}
               className={({ isActive }) =>
-                `rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                `rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${
                   isActive
                     ? "text-[var(--color-accent)]"
                     : "text-muted hover:text-[var(--color-accent)]"
@@ -180,7 +182,7 @@ const Navbar = () => {
                   <NavLink
                     to={item.to}
                     className={({ isActive }) =>
-                      `block rounded-lg px-3 py-2 font-medium transition-colors duration-300 ${
+                      `block rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-widest transition-colors duration-300 ${
                         isActive
                           ? "text-[var(--color-accent)]"
                           : "text-muted hover:text-[var(--color-accent)]"

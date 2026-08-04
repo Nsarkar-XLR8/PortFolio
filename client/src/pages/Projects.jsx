@@ -220,18 +220,22 @@ const Projects = () => {
 
                   {/* Quick Action Overlay Buttons on Hover */}
                   {liveUrl && (
-                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/75 opacity-0 group-hover:opacity-100 backdrop-blur-[3px] transition-opacity duration-300 z-20 p-4">
+                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/75 opacity-0 group-hover:opacity-100 backdrop-blur-[3px] transition-opacity duration-300 z-20 p-4 pointer-events-none group-hover:pointer-events-auto">
                       <a
                         href={liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn-primary rounded-full px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+                        onClick={(e) => e.stopPropagation()}
+                        className="btn-primary rounded-full px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 pointer-events-auto"
                       >
                         <FaExternalLinkAlt className="text-[10px]" /> Live Site
                       </a>
                       <button
-                        onClick={() => setActivePreviewRepo({ repo, liveUrl })}
-                        className="rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActivePreviewRepo({ repo, liveUrl });
+                        }}
+                        className="rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 px-4 py-2.5 text-xs font-bold flex items-center gap-1.5 backdrop-blur-md shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 pointer-events-auto"
                         title="Open interactive preview modal"
                       >
                         <FaPlay className="text-[10px]" /> Preview
@@ -287,7 +291,10 @@ const Projects = () => {
                     {liveUrl ? (
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => setActivePreviewRepo({ repo, liveUrl })}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActivePreviewRepo({ repo, liveUrl });
+                          }}
                           className="rounded-lg p-2 text-xs text-muted hover:bg-white/10 hover:text-white transition"
                           title="Interactive Frame Preview"
                         >
@@ -297,6 +304,7 @@ const Projects = () => {
                           href={liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
                           className="btn-primary rounded-lg px-3.5 py-1.5 text-xs font-bold flex items-center gap-1.5 shadow-md"
                           title={`Open ${liveUrl} in a new tab`}
                         >

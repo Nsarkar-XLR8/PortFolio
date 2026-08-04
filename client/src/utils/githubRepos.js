@@ -1,4 +1,4 @@
-const CACHE_KEY = "nayem-github-repos-v2";
+const CACHE_KEY = "nayem-github-repos-v3";
 const CACHE_TTL = 1000 * 60 * 10;
 const REQUEST_TIMEOUT = 6000;
 
@@ -41,6 +41,66 @@ const FALLBACK_REPOS = [
   },
   {
     id: 104,
+    name: "microservices-gateway",
+    description: "Spring Cloud Gateway with Eureka service discovery and route configuration for distributed microservices.",
+    language: "Java",
+    html_url: "https://github.com/Nsarkar-XLR8/microservices-gateway",
+    homepage: "",
+    stargazers_count: 2,
+    forks_count: 1,
+    open_issues_count: 0,
+    fork: false,
+  },
+  {
+    id: 105,
+    name: "payment-service",
+    description: "Idempotent payment processing service with Stripe and PayPal integration, webhook validation, and transaction reliability.",
+    language: "Java",
+    html_url: "https://github.com/Nsarkar-XLR8/payment-service",
+    homepage: "",
+    stargazers_count: 3,
+    forks_count: 0,
+    open_issues_count: 1,
+    fork: false,
+  },
+  {
+    id: 106,
+    name: "auth-api",
+    description: "Secure REST API with OAuth2, JWT token management, role-based access control, and session handling.",
+    language: "TypeScript",
+    html_url: "https://github.com/Nsarkar-XLR8/auth-api",
+    homepage: "",
+    stargazers_count: 1,
+    forks_count: 0,
+    open_issues_count: 0,
+    fork: false,
+  },
+  {
+    id: 107,
+    name: "data-access-optimizer",
+    description: "Hibernate query optimization toolkit with second-level caching, N+1 detection, and native SQL CTE support.",
+    language: "Java",
+    html_url: "https://github.com/Nsarkar-XLR8/data-access-optimizer",
+    homepage: "",
+    stargazers_count: 4,
+    forks_count: 2,
+    open_issues_count: 0,
+    fork: false,
+  },
+  {
+    id: 108,
+    name: "websocket-chat",
+    description: "Real-time chat service using WebSockets with message persistence, typing indicators, and presence tracking.",
+    language: "TypeScript",
+    html_url: "https://github.com/Nsarkar-XLR8/websocket-chat",
+    homepage: "",
+    stargazers_count: 2,
+    forks_count: 1,
+    open_issues_count: 0,
+    fork: false,
+  },
+  {
+    id: 109,
     name: "PortFolio",
     description: "Personal portfolio built with React, Vite, Tailwind CSS, and Framer Motion.",
     language: "JavaScript",
@@ -125,12 +185,19 @@ export const LIVE_URL_MAP = {
 };
 
 export const getLiveUrl = (repo) => {
+  let url = null;
   if (repo.homepage && repo.homepage.trim() !== "") {
-    return repo.homepage.trim();
+    url = repo.homepage.trim();
+  } else {
+    const key = repo.name;
+    const lowerKey = repo.name.toLowerCase();
+    url = LIVE_URL_MAP[key] || LIVE_URL_MAP[lowerKey] || null;
   }
-  const key = repo.name;
-  const lowerKey = repo.name.toLowerCase();
-  return LIVE_URL_MAP[key] || LIVE_URL_MAP[lowerKey] || null;
+  if (!url) return null;
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    url = `https://${url}`;
+  }
+  return url;
 };
 
 export const getPlatformBadge = (url) => {

@@ -138,3 +138,50 @@ export const fetchGitHubRepos = async (username, signal) => {
     signal?.removeEventListener("abort", abortOnParentSignal);
   }
 };
+
+// Dictionary for custom live URL overrides (e.g. Vercel, Render, Railway, etc.)
+export const LIVE_URL_MAP = {
+  "portfolio": "https://nsarkar-xlr8.github.io/PortFolio/",
+  "PortFolio": "https://nsarkar-xlr8.github.io/PortFolio/",
+  // Add any Vercel / Render URLs here if not set in GitHub repo settings:
+  // "my-vercel-app": "https://my-vercel-app.vercel.app",
+  // "my-render-service": "https://my-render-service.onrender.com",
+};
+
+export const getLiveUrl = (repo) => {
+  if (repo.homepage && repo.homepage.trim() !== "") {
+    return repo.homepage.trim();
+  }
+  const key = repo.name;
+  const lowerKey = repo.name.toLowerCase();
+  return LIVE_URL_MAP[key] || LIVE_URL_MAP[lowerKey] || null;
+};
+
+export const getPlatformBadge = (url) => {
+  if (!url) return null;
+  const lowerUrl = url.toLowerCase();
+  if (lowerUrl.includes("vercel.app") || lowerUrl.includes("vercel")) {
+    return { name: "Vercel", color: "#ffffff", bg: "rgba(255,255,255,0.12)", icon: "▲" };
+  }
+  if (lowerUrl.includes("onrender.com") || lowerUrl.includes("render")) {
+    return { name: "Render", color: "#46e3b7", bg: "rgba(70,227,183,0.12)", icon: "⚡" };
+  }
+  if (lowerUrl.includes("github.io")) {
+    return { name: "GitHub Pages", color: "#6e7681", bg: "rgba(110,118,129,0.15)", icon: "🐙" };
+  }
+  if (lowerUrl.includes("netlify.app")) {
+    return { name: "Netlify", color: "#25c7b7", bg: "rgba(37,199,183,0.15)", icon: "🌐" };
+  }
+  return { name: "Live Site", color: "var(--neon-cyan)", bg: "rgba(0,240,255,0.12)", icon: "🟢" };
+};
+
+export const getProjectImage = (repo) => {
+  const liveUrl = getLiveUrl(repo);
+  if (liveUrl) {
+    // Generate real-time screenshot thumbnail from live site
+    return `https://image.thum.io/get/width/600/crop/800/${liveUrl}`;
+  }
+  // Fallback to GitHub OpenGraph repository social card
+  return `https://opengraph.githubassets.com/1/Nsarkar-XLR8/${repo.name}`;
+};
+

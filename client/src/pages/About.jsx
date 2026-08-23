@@ -1,6 +1,7 @@
 import { useEffect, Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { updateSeo } from "../utils/seo";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const SkillRadar = lazy(() => import("../components/SkillRadar"));
 const ContributionHeatmap = lazy(() => import("../components/ContributionHeatmap"));
@@ -40,12 +41,35 @@ const skills = [
 
 const experience = [
   {
-    year: "Dec 2025 - Jun 2026",
+    year: "Apr 2026 - Present",
     role: "Software Engineer (Backend)",
-    company: "Betopia Group",
+    company: "Tyrand",
+    url: "https://www.tyrand.dev/",
     type: "Professional",
     description:
-      "Refactored core modules of a legacy monolithic application into type-safe distributed microservices using Java and Spring Boot, with Spring Cloud Gateway and Eureka improving service boundaries and feature delivery.",
+      "Engineering product-based backend systems and microservices using TypeScript, NestJS, Java, and Spring Boot, delivering scalable API architecture and core platform infrastructure.",
+  },
+  {
+    year: "Dec 2025 - Aug 2026",
+    role: "Software Engineer (Backend)",
+    company: "ScaleUp Ads Agency",
+    url: "https://scaleupadsagency.com/",
+    type: "Professional",
+    description:
+      "Refactored core modules of a legacy monolithic application into type-safe distributed microservices using Java, Spring Boot, TypeScript, and NestJS, with Spring Cloud Gateway and Eureka improving service boundaries and feature delivery.",
+  },
+  {
+    year: "Dec 2022 - Nov 2025",
+    role: "Freelance Backend Developer",
+    company: "Independent Contractor (University Senior Collaboration)",
+    type: "Freelance",
+    description:
+      "Collaborated with a university senior to deliver end-to-end backend systems for 6 international clients across e-commerce, content delivery, and service booking domains using TypeScript, NestJS, Java, and Spring Boot.",
+    projects: [
+      { name: "VendoFood", url: "https://vendofood.com", label: "Multi-tenant E-Commerce with Redis Catalog Caching" },
+      { name: "SktchLabs", url: "https://sktchlabs.com", label: "Automated Print-on-Demand Asset Pipeline" },
+      { name: "Witklip Farm", url: "https://witklipfarm.com", label: "Geospatial Booking & Scheduling System" },
+    ],
   },
   {
     year: "2020 - 2025",
@@ -256,10 +280,47 @@ const About = () => {
                     {exp.type}
                   </span>
                 </div>
-                <p className="mt-2 text-sm font-semibold" style={{ color: "var(--color-accent)" }}>
-                  {exp.company} | {exp.year}
+                <p className="mt-2 text-sm font-semibold flex flex-wrap items-center gap-2" style={{ color: "var(--color-accent)" }}>
+                  {exp.url ? (
+                    <a
+                      href={exp.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 hover:underline transition-all duration-200"
+                      style={{ color: "var(--color-accent)" }}
+                    >
+                      <span>{exp.company}</span>
+                      <FaExternalLinkAlt className="text-xs opacity-80" />
+                    </a>
+                  ) : (
+                    <span>{exp.company}</span>
+                  )}
+                  <span className="text-muted opacity-60">|</span>
+                  <span className="text-muted">{exp.year}</span>
                 </p>
                 <p className="mt-4 leading-7 text-muted">{exp.description}</p>
+                {exp.projects && exp.projects.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2.5">
+                    {exp.projects.map((proj) => (
+                      <a
+                        key={proj.name}
+                        href={proj.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-mono transition-all duration-200 hover:scale-105"
+                        style={{
+                          background: "rgba(0, 240, 255, 0.08)",
+                          border: "1px solid rgba(0, 240, 255, 0.25)",
+                          color: "var(--color-main)",
+                        }}
+                      >
+                        <span className="font-bold text-accent">{proj.name}</span>
+                        <span className="text-muted hidden sm:inline">• {proj.label}</span>
+                        <FaExternalLinkAlt className="text-[10px] opacity-75" />
+                      </a>
+                    ))}
+                  </div>
+                )}
               </motion.article>
             ))}
           </div>

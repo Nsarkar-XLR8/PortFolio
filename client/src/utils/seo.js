@@ -1,9 +1,9 @@
-const SITE_URL = "https://port-folio-blush-eta.vercel.app";
-const DEFAULT_TITLE = "Nayem Sarkar | Software Engineer & Backend Architect";
+const SITE_URL = "https://nsarkar-xlr8.github.io/PortFolio";
+const DEFAULT_TITLE = "Nayem Sarkar | Software Engineer (Backend)";
 const DEFAULT_DESCRIPTION =
-  "Nayem Sarkar is a Software Engineer and Backend Architect from Dhaka, Bangladesh specializing in Java, Spring Boot, NestJS, microservices, secure APIs, and optimized data systems.";
+  "Official portfolio of Nayem Sarkar — Software Engineer (Backend) specializing in TypeScript, NestJS, Java, Spring Boot, microservices architecture, and distributed systems.";
 const DEFAULT_KEYWORDS =
-  "Nayem Sarkar, nayem sarkar, Nayem Sarkar portfolio, Software Engineer Nayem Sarkar, Backend Architect Nayem Sarkar, Spring Boot developer, NestJS engineer, Java backend engineer, Dhaka software engineer";
+  "Nayem Sarkar, nayem sarkar, Md. Nayem Sarkar, Nayem Sarkar portfolio, Software Engineer Nayem Sarkar, Backend Engineer Nayem Sarkar, Backend Architect Nayem Sarkar, TypeScript engineer, NestJS engineer, Spring Boot developer, Java backend engineer, Dhaka software engineer, Tyrand, ScaleUp Ads Agency";
 const OG_IMAGE = `${SITE_URL}/Nayem.jpeg`;
 
 const setMeta = (selector, attribute, value) => {
@@ -38,7 +38,8 @@ export const updateSeo = ({
   keywords = DEFAULT_KEYWORDS,
   path = "/",
 } = {}) => {
-  const canonicalUrl = `${SITE_URL}${path}`;
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  const canonicalUrl = `${SITE_URL}${normalizedPath}`;
 
   document.title = title;
   setCanonical(canonicalUrl);

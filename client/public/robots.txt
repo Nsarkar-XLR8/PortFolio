@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://nsarkar-xlr8.github.io/PortFolio/sitemap.xml
 Sitemap: https://port-folio-blush-eta.vercel.app/sitemap.xml

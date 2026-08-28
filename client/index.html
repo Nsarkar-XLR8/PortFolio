@@ -3,9 +3,11 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="/icon2.png" />
-  <link rel="manifest" href="/manifest.json" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-site-verification" content="googlea43efd40229f7fa9" />
+  <link rel="icon" type="image/png" href="./icon2.png" />
+  <link rel="apple-touch-icon" href="./icon2.png" />
+  <link rel="manifest" href="./manifest.json" />
   <meta name="theme-color" content="#0a0a0f" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -52,83 +54,110 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://nsarkar-xlr8.github.io/PortFolio/#person",
-      "name": "Nayem Sarkar",
-      "alternateName": [
-        "Md. Nayem Sarkar",
-        "Nayem Sarkar Backend Engineer",
-        "Nayem Sarkar Software Engineer"
-      ],
-      "url": "https://nsarkar-xlr8.github.io/PortFolio/",
-      "image": "https://nsarkar-xlr8.github.io/PortFolio/Nayem.jpeg",
-      "jobTitle": "Software Engineer (Backend)",
-      "worksFor": [
+      "@graph": [
         {
-          "@type": "Organization",
-          "name": "Tyrand",
-          "url": "https://www.tyrand.dev/"
+          "@type": "Person",
+          "@id": "https://nsarkar-xlr8.github.io/PortFolio/#person",
+          "name": "Nayem Sarkar",
+          "alternateName": [
+            "Md. Nayem Sarkar",
+            "Nayem Sarkar Backend Engineer",
+            "Nayem Sarkar Software Engineer"
+          ],
+          "url": "https://nsarkar-xlr8.github.io/PortFolio/",
+          "image": "https://nsarkar-xlr8.github.io/PortFolio/Nayem.jpeg",
+          "jobTitle": "Software Engineer (Backend)",
+          "worksFor": [
+            {
+              "@type": "Organization",
+              "name": "Tyrand",
+              "url": "https://www.tyrand.dev/"
+            },
+            {
+              "@type": "Organization",
+              "name": "ScaleUp Ads Agency",
+              "url": "https://scaleupadsagency.com/"
+            }
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Dhaka",
+            "addressCountry": "Bangladesh"
+          },
+          "email": "mailto:nsarkar6251@gmail.com",
+          "telephone": "+880199918198",
+          "sameAs": [
+            "https://github.com/Nsarkar-XLR8",
+            "https://linkedin.com/in/nayem-sarkar",
+            "https://www.tyrand.dev/",
+            "https://scaleupadsagency.com/"
+          ],
+          "knowsAbout": [
+            "TypeScript",
+            "NestJS",
+            "Java",
+            "Spring Boot",
+            "Microservices",
+            "Backend Architecture",
+            "RESTful API Design",
+            "PostgreSQL",
+            "Redis",
+            "RabbitMQ",
+            "Docker"
+          ]
         },
         {
-          "@type": "Organization",
-          "name": "ScaleUp Ads Agency",
-          "url": "https://scaleupadsagency.com/"
+          "@type": "WebSite",
+          "@id": "https://nsarkar-xlr8.github.io/PortFolio/#website",
+          "name": "Nayem Sarkar Portfolio",
+          "alternateName": "Nayem Sarkar",
+          "url": "https://nsarkar-xlr8.github.io/PortFolio/",
+          "description": "Official portfolio website of Nayem Sarkar, Software Engineer (Backend)."
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://nsarkar-xlr8.github.io/PortFolio/#profile",
+          "dateCreated": "2024-01-01T00:00:00+06:00",
+          "dateModified": "2026-08-28T00:00:00+06:00",
+          "mainEntity": {
+            "@id": "https://nsarkar-xlr8.github.io/PortFolio/#person"
+          }
         }
-      ],
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Dhaka",
-        "addressCountry": "Bangladesh"
-      },
-      "email": "mailto:nsarkar6251@gmail.com",
-      "telephone": "+880199918198",
-      "sameAs": [
-        "https://github.com/Nsarkar-XLR8",
-        "https://linkedin.com/in/nayem-sarkar",
-        "https://www.tyrand.dev/",
-        "https://scaleupadsagency.com/"
-      ],
-      "knowsAbout": [
-        "TypeScript",
-        "NestJS",
-        "Java",
-        "Spring Boot",
-        "Microservices",
-        "Backend Architecture",
-        "RESTful API Design",
-        "PostgreSQL",
-        "Redis",
-        "RabbitMQ",
-        "Docker"
       ]
-    }
-  </script>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfilePage",
-      "dateCreated": "2024-01-01T00:00:00+06:00",
-      "dateModified": "2026-08-23T22:00:00+06:00",
-      "mainEntity": {
-        "@id": "https://nsarkar-xlr8.github.io/PortFolio/#person"
-      }
-    }
-  </script>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Nayem Sarkar Portfolio",
-      "alternateName": "Nayem Sarkar",
-      "url": "https://nsarkar-xlr8.github.io/PortFolio/",
-      "description": "Official portfolio website of Nayem Sarkar, Software Engineer (Backend)."
     }
   </script>
   <title>Nayem Sarkar | Software Engineer (Backend)</title>
 </head>
 
 <body>
-  <div id="root"></div>
+  <div id="root">
+    <!-- Crawlable semantic fallback for search indexing bots -->
+    <noscript>
+      <header>
+        <h1>Nayem Sarkar — Software Engineer (Backend)</h1>
+        <p>Specializing in TypeScript, NestJS, Java, Spring Boot, microservices architecture, and high-performance backend systems.</p>
+      </header>
+      <nav>
+        <ul>
+          <li><a href="https://nsarkar-xlr8.github.io/PortFolio/">Home</a></li>
+          <li><a href="https://nsarkar-xlr8.github.io/PortFolio/about">About</a></li>
+          <li><a href="https://nsarkar-xlr8.github.io/PortFolio/projects">Projects</a></li>
+          <li><a href="https://nsarkar-xlr8.github.io/PortFolio/services">Services</a></li>
+          <li><a href="https://nsarkar-xlr8.github.io/PortFolio/contact">Contact</a></li>
+        </ul>
+      </nav>
+      <main>
+        <section>
+          <h2>About Nayem Sarkar</h2>
+          <p>Backend Architect & Software Engineer engineering product-based systems with Spring Boot, NestJS, PostgreSQL, Redis, RabbitMQ, and Docker.</p>
+        </section>
+        <section>
+          <h2>Contact & Profiles</h2>
+          <p>Email: nsarkar6251@gmail.com | GitHub: https://github.com/Nsarkar-XLR8 | LinkedIn: https://linkedin.com/in/nayem-sarkar</p>
+        </section>
+      </main>
+    </noscript>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

@@ -38,8 +38,8 @@ export const updateSeo = ({
   keywords = DEFAULT_KEYWORDS,
   path = "/",
 } = {}) => {
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  const canonicalUrl = `${SITE_URL}${normalizedPath}`;
+  const normalizedPath = path === "/" || !path ? "/" : path.startsWith("/") ? path : `/${path}`;
+  const canonicalUrl = normalizedPath === "/" ? `${SITE_URL}/` : `${SITE_URL}${normalizedPath}`;
 
   document.title = title;
   setCanonical(canonicalUrl);
